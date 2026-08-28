@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Boletim de Informações Cadastrais</title>
+  <style>
+    /* ===== RESET E BASE ===== */
+    * { box-sizing: border-box; }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f5f5;
+        padding: 12px;
+        max-width: 1200px;
+        margin: 0 auto;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    #bicForm {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    .header img {
+        height: 60px;
+        max-width: 100%;
+    }
+    .header h1 {
+        color: #2c3e50;
+        font-size: clamp(1.2rem, 5vw, 1.8rem);
+        margin: 0;
+        font-weight: 600;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 8px;
+        flex: 1;
+        min-width: 150px;
+    }
+
+    h2 {
+        color: #3498db;
+        font-size: 1.2rem;
+        margin-top: 25px;
+        margin-bottom: 12px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #eee;
+        font-weight: 500;
+    }
+
+    .form-group {
+        margin-bottom: 16px;
+        padding: 12px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        border-left: 4px solid #3498db;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    textarea {
+        width: 100%;
+        padding: 12px 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        transition: border 0.3s;
+        box-sizing: border-box;
+        min-height: 44px;
+        font-family: inherit;
+    }
+    input:focus, textarea:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 5px rgba(52,152,219,0.3);
+    }
+    textarea {
+        min-height: 80px;
+        resize: vertical;
+    }
+
+    .radio-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .radio-option {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        padding: 8px 15px;
+        border-radius: 20px;
+        border: 1px solid #ddd;
+        transition: all 0.3s;
+        cursor: pointer;
+        min-height: 44px;
+        flex: 1 0 auto;
+        max-width: 100%;
+    }
+    .radio-option:hover {
+        border-color: #3498db;
+        background-color: #f0f8ff;
+    }
+    .radio-option input {
+        margin-right: 8px;
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+    .radio-option label {
+        margin-bottom: 0;
+        font-weight: normal;
+        cursor: pointer;
+        font-size: 0.95rem;
+    }
+
+    #gerarResultado {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 14px 20px;
+        font-size: 1.1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: block;
+        margin: 30px auto 0;
+        font-weight: 500;
+        width: 100%;
+        min-height: 50px;
+    }
+    #gerarResultado:hover {
+        background-color: #2980b9;
+    }
+
+    #result {
+        margin-top: 25px;
+        padding: 15px;
+        background-color: #e8f4fc;
+        border-radius: 5px;
+        border-left: 4px solid #3498db;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    #cad-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        background: #f0f2f5;
+        padding: 8px;
+        border-radius: 6px;
+    }
+    #cad-toolbar button {
+        padding: 10px 14px;
+        min-height: 44px;
+        min-width: 44px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        flex: 0 1 auto;
+        touch-action: manipulation;
+    }
+    #cad-toolbar button:hover {
+        background-color: #2980b9;
+    }
+    #cad-toolbar .color-picker {
+        width: 44px;
+        height: 44px;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        background: none;
+    }
+    #cad-toolbar select {
+        padding: 8px 12px;
+        min-height: 44px;
+        font-size: 0.9rem;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        background: white;
+    }
+    .tool-label {
+        display: inline;
+    }
+    @media (max-width: 600px) {
+        .tool-label { display: none; }
+        #cad-toolbar button {
+            flex: 1 0 auto;
+            min-width: 44px;
+            font-size: 0.8rem;
+            padding: 8px 10px;
+        }
+        #cad-toolbar select { font-size: 0.8rem; padding: 6px 8px; }
+    }
+
+    #export-buttons {
+        margin-top: 25px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        text-align: center;
+        display: none;
+    }
+    #export-buttons button {
+        margin: 6px 4px;
+        padding: 12px 16px;
+        min-height: 44px;
+        font-size: 1rem;
+        font-weight: 500;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+        touch-action: manipulation;
+        width: auto;
+        min-width: 120px;
+    }
+    #export-buttons button:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+    #exportTxt { background-color: #3498db; color: white; }
+    #exportPdf { background-color: #e74c3c; color: white; }
+    #exportCsv { background-color: #2ecc71; color: white; }
+    #uploadSystem { background-color: #9b59b6; color: white; }
+    #exportEmail { background-color: #1e90ff; color: white; }
+    #exportWhatsApp { background-color: #25D366; color: white; }
+
+    .container-botoes-rapidos {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #3498db;
+    }
+    .btn-rapido {
+        border: none;
+        padding: 12px 16px;
+        min-height: 44px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex: 1 0 auto;
+        justify-content: center;
+        touch-action: manipulation;
+    }
+    .btn-rapido:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .btn-padrao-baixo { background-color: #e74c3c; color: white; }
+    .btn-padrao-normal { background-color: #2ecc71; color: white; }
+
+    .btn-toggle-croqui {
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        padding: 14px 18px;
+        font-size: 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 20px 0;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        min-height: 50px;
+        touch-action: manipulation;
+    }
+    .btn-toggle-croqui.ativo {
+        background-color: #c0392b;
+    }
+
+    .codigo-cartografico-preview {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2c3e50;
+        background-color: #eef2f7;
+        padding: 12px;
+        border-radius: 4px;
+        text-align: center;
+        letter-spacing: 2px;
+        margin-top: 8px;
+        border: 1px dashed #3498db;
+        word-break: break-all;
+    }
+
+    #cad-canvas-wrapper {
+        position: relative;
+        width: 100%;
+        padding-bottom: 66.67%;
+        height: 0;
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    #cad-canvas-wrapper canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+        touch-action: none;
+    }
+
+    #preview-imagens {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    #preview-imagens img {
+        max-width: 100%;
+        height: auto;
+        width: 120px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        object-fit: cover;
+    }
+
+    #info-localizacao {
+        font-size: 0.95rem;
+        padding: 8px 0;
+    }
+    button[onclick="obterLocalizacao()"] {
+        padding: 12px 20px;
+        min-height: 44px;
+        background: #2c3e50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        touch-action: manipulation;
+        margin-bottom: 8px;
+    }
+
+    @media (max-width: 768px) {
+        .radio-group { flex-direction: column; gap: 8px; }
+        .radio-option { width: 100%; }
+        .header { flex-direction: column; align-items: flex-start; }
+        .header img { margin-bottom: 5px; }
+        #cad-toolbar button { margin-bottom: 4px; }
+        #export-buttons button {
+            display: block;
+            width: 100%;
+            margin: 8px 0;
+            min-width: unset;
+        }
+        .container-botoes-rapidos { flex-direction: column; }
+        .btn-rapido { width: 100%; }
+    }
+
+    @media (max-width: 480px) {
+        body { padding: 6px; }
+        #bicForm { padding: 12px; }
+        .form-group { padding: 10px; }
+        input, textarea { font-size: 16px; padding: 10px; }
+        .codigo-cartografico-preview { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <div class="header">
+    <img src="https://semad.ananindeua.pa.gov.br/ploa_2025/assets/imagens/logo.png" alt="Logo da Prefeitura de Ananindeua">
+    <h1>Secretaria Municipal de Gestão Fazendária</h1>
+  </div>
+
+  <!-- Formulário -->
+  <form id="bicForm">
+    <h1>BOLETIM DE INFORMAÇÕES CADASTRAIS</h1>
+
+    <hr>
+    <h2>Localização</h2>
+    <button type="button" onclick="obterLocalizacao()">Obter Localização Atual</button>
+    <p id="info-localizacao">Aguardando localização...</p>
+    <input type="hidden" id="localizacao-coordenadas">
+
+    <hr>
+    <h2>Imagens do Local</h2>
+    <input type="file" id="imagens-local" multiple accept="image/*">
+    <div id="preview-imagens"></div>
+    
+    <!-- Seção 1 - Protocolo / Memorando -->
+    <h2>Seção 1 - Protocolo / Memorando</h2>
+    <div class="form-group"><label for="protocolo_memorando">Nº Protocolo/Memorando:</label> <input id="protocolo_memorando" name="protocolo_memorando" type="text" inputmode="text" /></div>
+    <div class="form-group"><label for="data_abertura">Data de Abertura:</label> <input id="data_abertura" name="data_abertura" type="date" /></div>
+    <div class="form-group"><label for="cif">Cadastro de Informação Fiscal - CIF:</label> <input id="cif" name="cif" type="text" inputmode="text" /></div>
+    
+    <!-- Seção 2 - Tipo de Serviço -->
+    <h2>Seção 2 - Tipo de Serviço</h2>
+    <div class="form-group"><label>Tipo:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="tipo_implantacao" name="tipo_servico" type="radio" value="Implantação" /> <label for="tipo_implantacao">Implantação</label></div>
+        <div class="radio-option"><input id="tipo_alteracao" name="tipo_servico" type="radio" value="Alteração" /> <label for="tipo_alteracao">Alteração</label></div>
+        <div class="radio-option"><input id="tipo_cancelamento" name="tipo_servico" type="radio" value="Cancelamento" /> <label for="tipo_cancelamento">Cancelamento</label></div>
+        <div class="radio-option"><input id="tipo_desmembramento" name="tipo_servico" type="radio" value="Desmembramento" /> <label for="tipo_desmembramento">Desmembramento</label></div>
+        <div class="radio-option"><input id="tipo_remembramento" name="tipo_servico" type="radio" value="Remembramento" /> <label for="tipo_remembramento">Remembramento</label></div>
+        <div class="radio-option"><input id="tipo_inclusao" name="tipo_servico" type="radio" value="Inclusão" /> <label for="tipo_inclusao">Inclusão</label></div>
+      </div>
+    </div>
+    
+    <!-- Seção 3 - Localização Cartográfica -->
+    <h2>Seção 3 - Localização Cartográfica</h2>
+    <div class="form-group"><label for="distrito">Distrito (2 dígitos):</label> <input id="distrito" name="distrito" type="text" maxlength="2" inputmode="numeric" oninput="atualizarCodigoCartografico()" /></div>
+    <div class="form-group"><label for="quadra">Quadra (3 dígitos):</label> <input id="quadra" name="quadra" type="text" maxlength="3" inputmode="numeric" oninput="atualizarCodigoCartografico()" /></div>
+    <div class="form-group"><label for="lote">Lote (4 dígitos):</label> <input id="lote" name="lote" type="text" maxlength="4" inputmode="numeric" oninput="atualizarCodigoCartografico()" /></div>
+    <div class="form-group"><label for="complemento">Complemento (3 dígitos):</label> <input id="complemento" name="complemento" type="text" maxlength="3" inputmode="numeric" oninput="atualizarCodigoCartografico()" /></div>
+    <div class="form-group"><label for="dv">DV (1 dígito):</label> <input id="dv" name="dv" type="text" maxlength="1" inputmode="numeric" oninput="atualizarCodigoCartografico()" /></div>
+    
+    <div class="form-group">
+      <label>Código Cartográfico Formatado:</label>
+      <div id="codigo_cartografico_display" class="codigo-cartografico-preview">00.000.0000.000.0</div>
+      <input type="hidden" id="codigo_cartografico_completo" name="codigo_cartografico_completo" value="00.000.0000.000.0">
+    </div>
+
+    <!-- Seção 4 - Localização do Imóvel -->
+    <h2>Seção 4 - Localização do Imóvel</h2>
+    <div class="form-group"><label for="codigo_logradouro">Cód. Logradouro:</label> <input id="codigo_logradouro" name="codigo_logradouro" type="text" inputmode="text" /></div>
+    <div class="form-group"><label for="tipo_nome_logradouro">Tipo/Nome Logradouro:</label> <input id="tipo_nome_logradouro" name="tipo_nome_logradouro" type="text" inputmode="text" /></div>
+    <div class="form-group"><label for="cep">CEP:</label> <input id="cep" name="cep" type="text" inputmode="numeric" /></div>
+    <div class="form-group"><label for="numero_imovel">Nº Imóvel:</label> <input id="numero_imovel" name="numero_imovel" type="text" inputmode="numeric" /></div>
+    <div class="form-group"><label for="complemento_endereco">Complemento:</label> <input id="complemento_endereco" name="complemento_endereco" type="text" inputmode="text" /></div>
+    <div class="form-group"><label for="bairro">Bairro:</label> <input id="bairro" name="bairro" type="text" inputmode="text" /></div>
+    <div class="form-group"><label for="referencia">Referência:</label> <input id="referencia" name="referencia" type="text" inputmode="text" /></div>
+    
+    <!-- Seção 5 - Proprietário / Titular -->
+    <h2>Seção 5 - Proprietário / Titular</h2>
+    <div class="form-group"><label for="nome_proprietario">Nome:</label> <input id="nome_proprietario" name="nome_proprietario" type="text" required inputmode="text" /></div>
+    <div class="form-group"><label for="cpf_proprietario">CPF/CNPJ:</label> <input id="cpf_proprietario" name="cpf_proprietario" type="text" inputmode="numeric" /></div>
+    <div class="form-group"><label for="telefone_proprietario">Telefone:</label> <input id="telefone_proprietario" name="telefone_proprietario" type="text" inputmode="tel" /></div>
+    <div class="form-group"><label for="email_proprietario">Email:</label> <input id="email_proprietario" name="email_proprietario" type="text" inputmode="email" /></div>
+    
+    <!-- Seção 6 - Características do Imóvel -->
+    <h2>Seção 6 - Características do Imóvel</h2>
+    <div class="form-group"><label>Ocup. Lote:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="ocup_nao_construido" name="ocupacao_lote" type="radio" value="Não Construído" onchange="verificarNaoConstruido(this)" /> <label for="ocup_nao_construido">Não Construído</label></div>
+        <div class="radio-option"><input id="ocup_ruinas" name="ocupacao_lote" type="radio" value="Ruínas" onchange="verificarNaoConstruido(this)" /> <label for="ocup_ruinas">Ruínas</label></div>
+        <div class="radio-option"><input id="ocup_demolicao" name="ocupacao_lote" type="radio" value="Demolição" onchange="verificarNaoConstruido(this)" /> <label for="ocup_demolicao">Demolição</label></div>
+        <div class="radio-option"><input id="ocup_paralisada" name="ocupacao_lote" type="radio" value="Paralisada" onchange="verificarNaoConstruido(this)" /> <label for="ocup_paralisada">Paralisada</label></div>
+        <div class="radio-option"><input id="ocup_andamento" name="ocupacao_lote" type="radio" value="Andamento" onchange="verificarNaoConstruido(this)" /> <label for="ocup_andamento">Andamento</label></div>
+        <div class="radio-option"><input id="ocup_construido" name="ocupacao_lote" type="radio" value="Construído" onchange="verificarNaoConstruido(this)" /> <label for="ocup_construido">Construído</label></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Patrimônio:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="patrimonio_publico" name="patrimonio" type="radio" value="Público" /> <label for="patrimonio_publico">Público</label></div>
+        <div class="radio-option"><input id="patrimonio_privado" name="patrimonio" type="radio" value="Privado" /> <label for="patrimonio_privado">Privado</label></div>
+        <div class="radio-option"><input id="patrimonio_religioso" name="patrimonio" type="radio" value="Religioso" /> <label for="patrimonio_religioso">Religioso</label></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Uso:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="uso_proprio" name="uso" type="radio" value="Próprio" /> <label for="uso_proprio">Próprio</label></div>
+        <div class="radio-option"><input id="uso_alugado" name="uso" type="radio" value="Alugado" /> <label for="uso_alugado">Alugado</label></div>
+        <div class="radio-option"><input id="uso_cedido" name="uso" type="radio" value="Cedido" /> <label for="uso_cedido">Cedido</label></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Utilização:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="utilizacao_sem" name="utilizacao" type="radio" value="Ter S/ Uso" /> <label for="utilizacao_sem">Ter S/ Uso</label></div>
+        <div class="radio-option"><input id="utilizacao_residencial" name="utilizacao" type="radio" value="Residencial" /> <label for="utilizacao_residencial">Residencial</label></div>
+        <div class="radio-option"><input id="utilizacao_industrial" name="utilizacao" type="radio" value="Industrial" /> <label for="utilizacao_industrial">Industrial</label></div>
+        <div class="radio-option"><input id="utilizacao_comercial" name="utilizacao" type="radio" value="Comercial" /> <label for="utilizacao_comercial">Comercial</label></div>
+        <div class="radio-option"><input id="utilizacao_ruinas" name="utilizacao" type="radio" value="Ruinas" /> <label for="utilizacao_ruinas">Ruinas</label></div>
+        <div class="radio-option"><input id="utilizacao_latifundio" name="utilizacao" type="radio" value="Latifúndio" /> <label for="utilizacao_latifundio">Latifúndio</label></div>
+        <div class="radio-option"><input id="utilizacao_minifundio" name="utilizacao" type="radio" value="Minifúndio" /> <label for="utilizacao_minifundio">Minifúndio</label></div>
+        <div class="radio-option"><input id="utilizacao_lazer" name="utilizacao" type="radio" value="Lazer" /> <label for="utilizacao_lazer">Lazer</label></div>
+        <div class="radio-option"><input id="utilizacao_cultural" name="utilizacao" type="radio" value="Cultural" /> <label for="utilizacao_cultural">Cultural</label></div>
+        <div class="radio-option"><input id="utilizacao_adm" name="utilizacao" type="radio" value="Adm. Pública" /> <label for="utilizacao_adm">Adm. Pública</label></div>
+        <div class="radio-option"><input id="utilizacao_prest" name="utilizacao" type="radio" value="Prest. Serviço" /> <label for="utilizacao_prest">Prest. Serviço</label></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Limitação (Cerca/Muro):</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="limitacao_nenhum" name="limitacao" type="radio" value="Nenhum" /> <label for="limitacao_nenhum">Nenhum</label></div>
+        <div class="radio-option"><input id="limitacao_cerca" name="limitacao" type="radio" value="Cerca de Madeira" /> <label for="limitacao_cerca">Cerca de Madeira</label></div>
+        <div class="radio-option"><input id="limitacao_aramado" name="limitacao" type="radio" value="Aramado" /> <label for="limitacao_aramado">Aramado</label></div>
+        <div class="radio-option"><input id="limitacao_muro" name="limitacao" type="radio" value="Muro de Alvenaria" /> <label for="limitacao_muro">Muro de Alvenaria</label></div>
+        <div class="radio-option"><input id="limitacao_pre" name="limitacao" type="radio" value="Muro Pré-Moldado" /> <label for="limitacao_pre">Muro Pré-Moldado</label></div>
+        <div class="radio-option"><input id="limitacao_moirao" name="limitacao" type="radio" value="Moirão c/ Arame" /> <label for="limitacao_moirao">Moirão c/ Arame</label></div>
+        <div class="radio-option"><input id="limitacao_alambrado" name="limitacao" type="radio" value="Moirão c/ Alambrado" /> <label for="limitacao_alambrado">Moirão c/ Alambrado</label></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Pedologia:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="pedologia_alagado" name="pedologia" type="radio" value="Alagado" /> <label for="pedologia_alagado">Alagado</label></div>
+        <div class="radio-option"><input id="pedologia_inundavel" name="pedologia" type="radio" value="Inundável" /> <label for="pedologia_inundavel">Inundável</label></div>
+        <div class="radio-option"><input id="pedologia_rochoso" name="pedologia" type="radio" value="Rochoso" /> <label for="pedologia_rochoso">Rochoso</label></div>
+        <div class="radio-option"><input id="pedologia_argiloso" name="pedologia" type="radio" value="Argiloso" /> <label for="pedologia_argiloso">Argiloso</label></div>
+        <div class="radio-option"><input id="pedologia_arenoso" name="pedologia" type="radio" value="Arenoso" /> <label for="pedologia_arenoso">Arenoso</label></div>
+        <div class="radio-option"><input id="pedologia_misto" name="pedologia" type="radio" value="Misto" /> <label for="pedologia_misto">Misto</label></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Tempo de Construção:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="tempo_sem" name="tempo_construcao" type="radio" value="Sem Informações" /> <label for="tempo_sem">Sem Informações</label></div>
+        <div class="radio-option"><input id="tempo_novo" name="tempo_construcao" type="radio" value="Até 5 anos" /> <label for="tempo_novo">Até 5 anos</label></div>
+        <div class="radio-option"><input id="tempo_6" name="tempo_construcao" type="radio" value="6 a 10 anos" /> <label for="tempo_6">6 a 10 anos</label></div>
+        <div class="radio-option"><input id="tempo_11" name="tempo_construcao" type="radio" value="11 a 20 anos" /> <label for="tempo_11">11 a 20 anos</label></div>
+        <div class="radio-option"><input id="tempo_21" name="tempo_construcao" type="radio" value="21 a 30 anos" /> <label for="tempo_21">21 a 30 anos</label></div>
+        <div class="radio-option"><input id="tempo_31" name="tempo_construcao" type="radio" value="31 a 40 anos" /> <label for="tempo_31">31 a 40 anos</label></div>
+        <div class="radio-option"><input id="tempo_41" name="tempo_construcao" type="radio" value="41 a 50 anos" /> <label for="tempo_41">41 a 50 anos</label></div>
+        <div class="radio-option"><input id="tempo_50" name="tempo_construcao" type="radio" value="Mais de 50 anos" /> <label for="tempo_50">Mais de 50 anos</label></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Equipamentos Urbanos:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="equip_essenciais" name="equip_urbanos" type="radio" value="Essenciais" /> <label for="equip_essenciais">Essenciais</label></div>
+        <div class="radio-option"><input id="equip_completo" name="equip_urbanos" type="radio" value="Completo" /> <label for="equip_completo">Completo</label></div>
+        <div class="radio-option"><input id="equip_inexistente" name="equip_urbanos" type="radio" value="Inexistente" /> <label for="equip_inexistente">Inexistente</label></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Situação na Quadra:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="quadra_esquina_3" name="situacao_quadra" type="radio" value="Esquina c/ 3 testadas" /> <label for="quadra_esquina_3">Esquina c/ 3 testadas</label></div>
+        <div class="radio-option"><input id="quadra_esquina_2" name="situacao_quadra" type="radio" value="Esquina c/ 2 testadas" /> <label for="quadra_esquina_2">Esquina c/ 2 testadas</label></div>
+        <div class="radio-option"><input id="normal" name="situacao_quadra" type="radio" value="Normal" /> <label for="normal">Normal</label></div>
+        <div class="radio-option"><input id="normal_2" name="situacao_quadra" type="radio" value="Normal c/ 2 testadas" /> <label for="normal_2">Normal c/ 2 testadas</label></div>
+        <div class="radio-option"><input id="vila_encr" name="situacao_quadra" type="radio" value="Vila/ Encravado" /> <label for="vila_encr">Vila/ Encravado</label></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Zona:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="zona_residencial" name="zona" type="radio" value="Residencial" /> <label for="zona_residencial">Residencial</label></div>
+        <div class="radio-option"><input id="zona_comercial" name="zona" type="radio" value="Comercial" /> <label for="zona_comercial">Comercial</label></div>
+        <div class="radio-option"><input id="zona_mista" name="zona" type="radio" value="Mista" /> <label for="zona_mista">Mista</label></div>
+        <div class="radio-option"><input id="zona_industrial" name="zona" type="radio" value="Industrial" /> <label for="zona_industrial">Industrial</label></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Topografia:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="topografia_plana" name="topografia" type="radio" value="Plana" /> <label for="topografia_plana">Plana</label></div>
+        <div class="radio-option"><input id="topografia_aclive" name="topografia" type="radio" value="Aclive" /> <label for="topografia_aclive">Aclive</label></div>
+        <div class="radio-option"><input id="topografia_declive" name="topografia" type="radio" value="Declive" /> <label for="topografia_declive">Declive</label></div>
+        <div class="radio-option"><input id="topografia_irregular" name="topografia" type="radio" value="Irregular" /> <label for="topografia_irregular">Irregular</label></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Aforamento:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="aforamento_sim" name="aforamento" type="radio" value="Sim" /> <label for="aforamento_sim">Sim</label></div>
+        <div class="radio-option"><input id="aforamento_nao" name="aforamento" type="radio" value="Não" /> <label for="aforamento_nao">Não</label></div>
+      </div>
+    </div>
+    
+    <!-- Seção 7 - Medidas do Imóvel -->
+    <h2>Seção 7 - Medidas do Imóvel</h2>
+    <div class="form-group"><label for="testada">Testada Principal:</label> <input id="testada" name="testada" type="text" inputmode="decimal" /></div>
+    <div class="form-group"><label for="profundidade">Profundidade:</label> <input id="profundidade" name="profundidade" type="text" inputmode="decimal" /></div>
+    <div class="form-group"><label for="area_terreno">Área do Terreno:</label> <input id="area_terreno" name="area_terreno" type="text" required inputmode="decimal" /></div>
+    <div class="form-group"><label for="area_edif_unidade">Área Edificada Unidade:</label> <input id="area_edif_unidade" name="area_edif_unidade" type="text" inputmode="decimal" /></div>
+    <div class="form-group"><label for="area_total_edificada">Área Total Edificada:</label> <input id="area_total_edificada" name="area_total_edificada" type="text" required inputmode="decimal" /></div>
+    <div class="form-group"><label for="num_pavilhao">Nº do Pavilhão:</label> <input id="num_pavilhao" name="num_pavilhao" type="text" inputmode="numeric" /></div>
+    <div class="form-group"><label for="num_unidades">Nº das Unidades:</label> <input id="num_unidades" name="num_unidades" type="text" inputmode="numeric" /></div>
+    
+    <!-- Seção 8 - Informações sobre a Edificação -->
+    <h2 id="sec8-titulo">Seção 8 - Informações sobre a Edificação</h2>
+    
+    <div class="container-botoes-rapidos">
+      <button type="button" onclick="aplicarPadraoEdificacao('BAIXO')" class="btn-rapido btn-padrao-baixo">
+        <i class="fas fa-layer-group"></i> Padrão Baixo
+      </button>
+      <button type="button" onclick="aplicarPadraoEdificacao('NORMAL')" class="btn-rapido btn-padrao-normal">
+        <i class="fas fa-layer-group"></i> Padrão Normal
+      </button>
+    </div>
+    
+    <div class="form-group"><label>Tipo:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="tipo_nao_aplica" name="tipo_edificacao" type="radio" value="Não se aplica" /> <label for="tipo_nao_aplica">Não se aplica</label></div>
+        <div class="radio-option"><input id="tipo_casa" name="tipo_edificacao" type="radio" value="Casa" /> <label for="tipo_casa">Casa</label></div>
+        <div class="radio-option"><input id="tipo_apartamento" name="tipo_edificacao" type="radio" value="Apartamento" /> <label for="tipo_apartamento">Apartamento</label></div>
+        <div class="radio-option"><input id="tipo_loja" name="tipo_edificacao" type="radio" value="Loja/Sala" /> <label for="tipo_loja">Loja/Sala</label></div>
+        <div class="radio-option"><input id="tipo_galpao" name="tipo_edificacao" type="radio" value="Galpão" /> <label for="tipo_galpao">Galpão</label></div>
+        <div class="radio-option"><input id="tipo_telheiro" name="tipo_edificacao" type="radio" value="Telheiro" /> <label for="tipo_telheiro">Telheiro</label></div>
+        <div class="radio-option"><input id="tipo_galpao_ind" name="tipo_edificacao" type="radio" value="Galpão Industrial" /> <label for="tipo_galpao_ind">Galpão Industrial</label></div>
+        <div class="radio-option"><input id="tipo_especial" name="tipo_edificacao" type="radio" value="Especial" /> <label for="tipo_especial">Especial</label></div>
+        <div class="radio-option"><input id="tipo_estacionamento" name="tipo_edificacao" type="radio" value="Estacionamento" /> <label for="tipo_estacionamento">Estacionamento</label></div>
+      </div>
+    </div>
+    
+    <div class="form-group"><label>Esquadrias:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="esquadria_nao_aplica" name="tipo_esquadria" type="radio" value="Não se aplica" /> <label for="esquadria_nao_aplica">Não se aplica</label></div>
+        <div class="radio-option"><input id="esquadria_sem" name="tipo_esquadria" type="radio" value="Sem" /> <label for="esquadria_sem">Sem</label></div>
+        <div class="radio-option"><input id="esquadria_madeira" name="tipo_esquadria" type="radio" value="Madeira" /> <label for="esquadria_madeira">Madeira</label></div>
+        <div class="radio-option"><input id="esquadria_ferro" name="tipo_esquadria" type="radio" value="Ferro" /> <label for="esquadria_ferro">Ferro</label></div>
+        <div class="radio-option"><input id="esquadria_aluminio" name="tipo_esquadria" type="radio" value="Alumínio" /> <label for="esquadria_aluminio">Alumínio</label></div>
+        <div class="radio-option"><input id="esquadria_especial" name="tipo_esquadria" type="radio" value="Especial" /> <label for="esquadria_especial">Especial</label></div>
+      </div>
+    </div>
+
+    <div class="form-group"><label>Garagem:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="garagem_nao_aplica" name="garagem" type="radio" value="Não se aplica" /> <label for="garagem_nao_aplica">Não se aplica</label></div>
+        <div class="radio-option"><input id="garagem_sim" name="garagem" type="radio" value="Sim" /> <label for="garagem_sim">Sim</label></div>
+        <div class="radio-option"><input id="garagem_nao" name="garagem" type="radio" value="Não" /> <label for="garagem_nao">Não</label></div>
+      </div>
+    </div>
+
+    <div class="form-group"><label>Alinhamento:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="alinhamento_nao_aplica" name="tipo_alinhamento" type="radio" value="Não se aplica" /> <label for="alinhamento_nao_aplica">Não se aplica</label></div>
+        <div class="radio-option"><input id="alinhamento_alinhada" name="tipo_alinhamento" type="radio" value="Alinhada" /> <label for="alinhamento_alinhada">Alinhada</label></div>
+        <div class="radio-option"><input id="alinhamento_recuada" name="tipo_alinhamento" type="radio" value="Recuada" /> <label for="alinhamento_recuada">Recuada</label></div>
+      </div>
+    </div>
+
+    <div class="form-group"><label>Situação Unidade Construída:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="situacao_nao_aplica" name="tipo_situacao_unidade" type="radio" value="Não se aplica" /> <label for="situacao_nao_aplica">Não se aplica</label></div>
+        <div class="radio-option"><input id="situacao_frente" name="tipo_situacao_unidade" type="radio" value="Frente" /> <label for="situacao_frente">Frente</label></div>
+        <div class="radio-option"><input id="situacao_fundos" name="tipo_situacao_unidade" type="radio" value="Fundos" /> <label for="situacao_fundos">Fundos</label></div>
+        <div class="radio-option"><input id="situacao_galeria" name="tipo_situacao_unidade" type="radio" value="Galeria" /> <label for="situacao_galeria">Galeria</label></div>
+      </div>
+    </div>
+
+    <div class="form-group"><label>Forro:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="forro_nao_aplica" name="tipo_forro" type="radio" value="Não se aplica" /> <label for="forro_nao_aplica">Não se aplica</label></div>
+        <div class="radio-option"><input id="forro_sem" name="tipo_forro" type="radio" value="Sem" /> <label for="forro_sem">Sem</label></div>
+        <div class="radio-option"><input id="forro_madeira" name="tipo_forro" type="radio" value="Madeira" /> <label for="forro_madeira">Madeira</label></div>
+        <div class="radio-option"><input id="forro_gesso" name="tipo_forro" type="radio" value="Gesso" /> <label for="forro_gesso">Gesso</label></div>
+        <div class="radio-option"><input id="forro_laje" name="tipo_forro" type="radio" value="Laje" /> <label for="forro_laje">Laje</label></div>
+        <div class="radio-option"><input id="forro_aglomerado" name="tipo_forro" type="radio" value="Chapas Aglomeradas" /> <label for="forro_aglomerado">Chapas Aglomeradas</label></div>
+        <div class="radio-option"><input id="forro_especial" name="tipo_forro" type="radio" value="Especial" /> <label for="forro_especial">Especial</label></div>
+        <div class="radio-option"><input id="forro_PVC" name="tipo_forro" type="radio" value="PVC" /> <label for="forro_PVC">PVC</label></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+        <label>Vidros:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="vidros_nao_aplica" name="tipo_vidros" value="Não se aplica"> <label for="vidros_nao_aplica">Não se aplica</label></div>
+            <div class="radio-option"><input type="radio" id="vidros_sem" name="tipo_vidros" value="Sem"> <label for="vidros_sem">Sem</label></div>
+            <div class="radio-option"><input type="radio" id="vidros_comum" name="tipo_vidros" value="Comum"> <label for="vidros_comum">Comum</label></div>
+            <div class="radio-option"><input type="radio" id="vidros_vitrais" name="tipo_vidros" value="Vitrais"> <label for="vidros_vitrais">Vitrais</label></div>
+            <div class="radio-option"><input type="radio" id="vidros_fume" name="tipo_vidros" value="Fumê"> <label for="vidros_fume">Fumê</label></div>
+            <div class="radio-option"><input type="radio" id="vidros_blindex" name="tipo_vidros" value="Blindex"> <label for="vidros_blindex">Blindex</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Ocupação:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="ocupacao_nao_aplica" name="tipo_ocupacao" value="Não se aplica"> <label for="ocupacao_nao_aplica">Não se aplica</label></div>
+            <div class="radio-option"><input type="radio" id="ocupacao_ocupado" name="tipo_ocupacao" value="Ocupado"> <label for="ocupacao_ocupado">Ocupado</label></div>
+            <div class="radio-option"><input type="radio" id="ocupacao_desocupado" name="tipo_ocupacao" value="Desocupado"> <label for="ocupacao_desocupado">Desocupado</label></div>
+            <div class="radio-option"><input type="radio" id="ocupacao_fechado" name="tipo_ocupacao" value="Fechado"> <label for="ocupacao_fechado">Fechado</label></div>
+        </div>
+    </div>
+
+    <div class="form-group"><label>Piscina:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="piscina_nao_aplica" name="piscina" type="radio" value="Não se aplica" /> <label for="piscina_nao_aplica">Não se aplica</label></div>
+        <div class="radio-option"><input id="piscina_sim" name="piscina" type="radio" value="Sim" /> <label for="piscina_sim">Sim</label></div>
+        <div class="radio-option"><input id="piscina_nao" name="piscina" type="radio" value="Não" /> <label for="piscina_nao">Não</label></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+        <label>Estado de Conservação:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="conservacao_nao_aplica" name="tipo_conservacao" value="Não se aplica"> <label for="conservacao_nao_aplica">Não se aplica</label></div>
+            <div class="radio-option"><input type="radio" id="conservacao_sem" name="tipo_conservacao" value="Sem"> <label for="conservacao_sem">Sem</label></div>
+            <div class="radio-option"><input type="radio" id="conservacao_otima" name="tipo_conservacao" value="Nova/Ótima"> <label for="conservacao_otima">Nova/Ótima</label></div>
+            <div class="radio-option"><input type="radio" id="conservacao_bom" name="tipo_conservacao" value="Bom"> <label for="conservacao_bom">Bom</label></div>
+            <div class="radio-option"><input type="radio" id="conservacao_regular" name="tipo_conservacao" value="Regular"> <label for="conservacao_regular">Regular</label></div>
+            <div class="radio-option"><input type="radio" id="conservacao_mau" name="tipo_conservacao" value="Mau"> <label for="conservacao_mau">Mau</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Situação:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="situacao_edif_nao_aplica" name="tipo_situacao_edif" value="Não se aplica"> <label for="situacao_edif_nao_aplica">Não se aplica</label></div>
+            <div class="radio-option"><input type="radio" id="situacao_isolada" name="tipo_situacao_edif" value="Isolada"> <label for="situacao_isolada">Isolada</label></div>
+            <div class="radio-option"><input type="radio" id="situacao_conjugada" name="tipo_situacao_edif" value="Conjugada"> <label for="situacao_conjugada">Conjugada</label></div>
+            <div class="radio-option"><input type="radio" id="situacao_geminada" name="tipo_situacao_edif" value="Geminada"> <label for="situacao_geminada">Geminada</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Estrutura:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="estrutura_nao_aplica" name="tipo_estrutura" value="Não se aplica"> <label for="estrutura_nao_aplica">Não se aplica</label></div>
+            <div class="radio-option"><input type="radio" id="estrutura_sem" name="tipo_estrutura" value="Sem"> <label for="estrutura_sem">Sem</label></div>
+            <div class="radio-option"><input type="radio" id="estrutura_alvenaria" name="tipo_estrutura" value="Alvenaria"> <label for="estrutura_alvenaria">Alvenaria</label></div>
+            <div class="radio-option"><input type="radio" id="estrutura_madeira" name="tipo_estrutura" value="Madeira"> <label for="estrutura_madeira">Madeira</label></div>
+            <div class="radio-option"><input type="radio" id="estrutura_metalica" name="tipo_estrutura" value="Metálica"> <label for="estrutura_metalica">Metálica</label></div>
+            <div class="radio-option"><input type="radio" id="estrutura_concreto" name="tipo_estrutura" value="Concreto"> <label for="estrutura_concreto">Concreto</label></div>
+            <div class="radio-option"><input type="radio" id="estrutura_taipa" name="tipo_estrutura" value="Taipa"> <label for="estrutura_taipa">Taipa</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Acabamento Interno:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="acabamento_interno_nao_aplica" name="tipo_acabamento_interno" value="Não se aplica"> <label for="acabamento_interno_nao_aplica">Não se aplica</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_interno_sem" name="tipo_acabamento_interno" value="Sem"> <label for="acabamento_interno_sem">Sem</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_interno_caiacao" name="tipo_acabamento_interno" value="Caiação"> <label for="acabamento_interno_caiacao">Caiação</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_interno_ceramico" name="tipo_acabamento_interno" value="Material Cerâmico"> <label for="acabamento_interno_ceramico">Material Cerâmico</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_interno_impermeavel" name="tipo_acabamento_interno" value="Pintura Impermeável"> <label for="acabamento_interno_impermeavel">Pintura Impermeável</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_interno_madeira" name="tipo_acabamento_interno" value="Madeira"> <label for="acabamento_interno_madeira">Madeira</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_interno_especial" name="tipo_acabamento_interno" value="Especial"> <label for="acabamento_interno_especial">Especial</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Acabamento Externo:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="acabamento_externo_nao_aplica" name="tipo_acabamento_externo" value="Não se aplica"> <label for="acabamento_externo_nao_aplica">Não se aplica</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_externo_sem" name="tipo_acabamento_externo" value="Sem"> <label for="acabamento_externo_sem">Sem</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_externo_caiacao" name="tipo_acabamento_externo" value="Caiação"> <label for="acabamento_externo_caiacao">Caiação</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_externo_ceramico" name="tipo_acabamento_externo" value="Material Cerâmico"> <label for="acabamento_externo_ceramico">Material Cerâmico</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_externo_ceramica_gail" name="tipo_acabamento_externo" value="Cerâmica Gail"> <label for="acabamento_externo_ceramica_gail">Cerâmica Gail</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_externo_madeira" name="tipo_acabamento_externo" value="Madeira"> <label for="acabamento_externo_madeira">Madeira</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_externo_metálica" name="tipo_acabamento_externo" value="Metálica"> <label for="acabamento_externo_metálica">Metálica</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_externo_pintura" name="tipo_acabamento_externo" value="Pintura"> <label for="acabamento_externo_pintura">Pintura</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_externo_especial" name="tipo_acabamento_externo" value="Especial"> <label for="acabamento_externo_especial">Especial</label></div>
+            <div class="radio-option"><input type="radio" id="acabamento_externo_pedras_nobres" name="tipo_acabamento_externo" value="Pedras Nobres"> <label for="acabamento_externo_pedras_nobres">Pedras Nobres</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Cobertura:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="cobertura_nao_aplica" name="tipo_cobertura" value="Não se aplica"> <label for="cobertura_nao_aplica">Não se aplica</label></div>
+            <div class="radio-option"><input type="radio" id="cobertura_sem" name="tipo_cobertura" value="Sem"> <label for="cobertura_sem">Sem</label></div>
+            <div class="radio-option"><input type="radio" id="cobertura_palha_zinco_madeira" name="tipo_cobertura" value="Palha/Zinco/Madeira"> <label for="cobertura_palha_zinco_madeira">Palha/Zinco/Madeira</label></div>
+            <div class="radio-option"><input type="radio" id="cobertura_telha_amianto" name="tipo_cobertura" value="Telha Amianto"> <label for="cobertura_telha_amianto">Telha Amianto</label></div>
+            <div class="radio-option"><input type="radio" id="cobertura_telha_barro" name="tipo_cobertura" value="Telha Barro"> <label for="cobertura_telha_barro">Telha Barro</label></div>
+            <div class="radio-option"><input type="radio" id="cobertura_laje" name="tipo_cobertura" value="Laje"> <label for="cobertura_laje">Laje</label></div>
+            <div class="radio-option"><input type="radio" id="cobertura_especial" name="tipo_cobertura" value="Especial"> <label for="cobertura_especial">Especial</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Instalação Sanitária:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="sanitario_nao_aplica" name="tipo_sanitario" value="Não se aplica"> <label for="sanitario_nao_aplica">Não se aplica</label></div>
+            <div class="radio-option"><input type="radio" id="sanitario_sem" name="tipo_sanitario" value="Sem"> <label for="sanitario_sem">Sem</label></div>
+            <div class="radio-option"><input type="radio" id="sanitario_externa" name="tipo_sanitario" value="Externa"> <label for="sanitario_externa">Externa</label></div>
+            <div class="radio-option"><input type="radio" id="sanitario_interna_simples" name="tipo_sanitario" value="Interna Simples"> <label for="sanitario_interna_simples">Interna Simples</label></div>
+            <div class="radio-option"><input type="radio" id="sanitario_mais_internas" name="tipo_sanitario" value="Mais de uma Interna"> <label for="sanitario_mais_internas">Mais de uma Interna</label></div>
+            <div class="radio-option"><input type="radio" id="sanitario_interna_completa" name="tipo_sanitario" value="Interna Completa"> <label for="sanitario_interna_completa">Interna Completa</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Piso:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="piso_nao_aplica" name="tipo_piso" value="Não se aplica"> <label for="piso_nao_aplica">Não se aplica</label></div>
+            <div class="radio-option"><input type="radio" id="piso_sem" name="tipo_piso" value="Sem"> <label for="piso_sem">Sem</label></div>
+            <div class="radio-option"><input type="radio" id="piso_terra_batida" name="tipo_piso" value="Terra Batida"> <label for="piso_terra_batida">Terra Batida</label></div>
+            <div class="radio-option"><input type="radio" id="piso_cimento" name="tipo_piso" value="Cimento"> <label for="piso_cimento">Cimento</label></div>
+            <div class="radio-option"><input type="radio" id="piso_mosaico" name="tipo_piso" value="Mosaico"> <label for="piso_mosaico">Mosaico</label></div>
+            <div class="radio-option"><input type="radio" id="piso_tabuas" name="tipo_piso" value="Tábuas"> <label for="piso_tabuas">Tábuas</label></div>
+            <div class="radio-option"><input type="radio" id="piso_taco" name="tipo_piso" value="Taco"> <label for="piso_taco">Taco</label></div>
+            <div class="radio-option"><input type="radio" id="piso_plastico" name="tipo_piso" value="Material Plástico"> <label for="piso_plastico">Material Plástico</label></div>
+            <div class="radio-option"><input type="radio" id="piso_ceramica_popular" name="tipo_piso" value="Cerâmica Popular"> <label for="piso_ceramica_popular">Cerâmica Popular</label></div>
+            <div class="radio-option"><input type="radio" id="piso_ceramica_especial" name="tipo_piso" value="Cerâmica Especial"> <label for="piso_ceramica_especial">Cerâmica Especial</label></div>
+            <div class="radio-option"><input type="radio" id="piso_pedras_nobres" name="tipo_piso" value="Pedras Nobres"> <label for="piso_pedras_nobres">Pedras Nobres</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Instalação Elétrica:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="instalacao_eletrica_nao_aplica" name="tipo_instalacao_eletrica" value="Não se aplica"> <label for="instalacao_eletrica_nao_aplica">Não se aplica</label></div>
+            <div class="radio-option"><input type="radio" id="instalacao_eletrica_sem" name="tipo_instalacao_eletrica" value="Sem"> <label for="instalacao_eletrica_sem">Sem</label></div>
+            <div class="radio-option"><input type="radio" id="instalacao_eletrica_aparente" name="tipo_instalacao_eletrica" value="Aparente"> <label for="instalacao_eletrica_aparente">Aparente</label></div>
+            <div class="radio-option"><input type="radio" id="instalacao_eletrica_embutida" name="tipo_instalacao_eletrica" value="Embutida"> <label for="instalacao_eletrica_embutida">Embutida</label></div>
+        </div>
+    </div>
+
+    <!-- Seção 9 - Informações do Logradouro -->
+    <h2>Seção 9 - Informações do Logradouro</h2>
+    <div class="form-group"><label>Esgoto:</label>
+      <div class="radio-group">
+        <div class="radio-option"><input id="esgoto_fossa" name="esgoto" type="radio" value="Fossa/Sumidouro" /> <label for="esgoto_fossa">Fossa/Sumidouro</label></div>
+        <div class="radio-option"><input id="esgoto_rede" name="esgoto" type="radio" value="Rede Pública" /> <label for="esgoto_rede">Rede Pública</label></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+        <label>Água:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="agua_poco" name="tipo_agua" value="Poço"> <label for="agua_poco">Poço</label></div>
+            <div class="radio-option"><input type="radio" id="agua_rede" name="tipo_agua" value="Rede Pública"> <label for="agua_rede">Rede Pública</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Telecom:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="telecom_sim" name="tipo_telecom" value="Sim"> <label for="telecom_sim">Sim</label></div>
+            <div class="radio-option"><input type="radio" id="telecom_nao" name="tipo_telecom" value="Não"> <label for="telecom_nao">Não</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Energia Elétrica:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="energia_sim" name="tipo_energia" value="Sim"> <label for="energia_sim">Sim</label></div>
+            <div class="radio-option"><input type="radio" id="energia_nao" name="tipo_energia" value="Não"> <label for="energia_nao">Não</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Conduta Acessível:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="conduta_sim" name="tipo_conduta" value="Sim"> <label for="conduta_sim">Sim</label></div>
+            <div class="radio-option"><input type="radio" id="conduta_nao" name="tipo_conduta" value="Não"> <label for="conduta_nao">Não</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Coleta de Lixo:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="lixo_sim" name="tipo_lixo" value="Sim"> <label for="lixo_sim">Sim</label></div>
+            <div class="radio-option"><input type="radio" id="lixo_nao" name="tipo_lixo" value="Não"> <label for="lixo_nao">Não</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Arborização:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="arborizacao_sim" name="tipo_arborizacao" value="Sim"> <label for="arborizacao_sim">Sim</label></div>
+            <div class="radio-option"><input type="radio" id="arborizacao_nao" name="tipo_arborizacao" value="Não"> <label for="arborizacao_nao">Não</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Guias/Sarjetas:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="Guias/Sarjetas_sim" name="tipo_Guias/Sarjetas" value="Sim"> <label for="Guias/Sarjetas_sim">Sim</label></div>
+            <div class="radio-option"><input type="radio" id="Guias/Sarjetas_nao" name="tipo_Guias/Sarjetas" value="Não"> <label for="Guias/Sarjetas_nao">Não</label></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Sistema Viário:</label>
+        <div class="radio-group">
+            <div class="radio-option"><input type="radio" id="viario_terra" name="tipo_viario" value="Terras"> <label for="viario_terra">Terra</label></div>
+            <div class="radio-option"><input type="radio" id="viario_asfalto" name="tipo_viario" value="Massa Asfáltica"> <label for="viario_asfalto">Massa Asfáltica</label></div>
+            <div class="radio-option"><input type="radio" id="viario_concreto" name="tipo_viario" value="Concreto Asfáltico"> <label for="viario_concreto">Concreto Asfáltico</label></div>
+            <div class="radio-option"><input type="radio" id="viario_natural" name="tipo_viario" value="Leito Natural"> <label for="viario_natural">Leito Natural</label></div>
+            <div class="radio-option"><input type="radio" id="viario_revestimento" name="tipo_viario" value="Revestimento Primário"> <label for="viario_revestimento">Revestimento Primário</label></div>
+            <div class="radio-option"><input type="radio" id="viario_poliedro" name="tipo_viario" value="Poliedro/Blokret"> <label for="viario_poliedro">Poliedro/Blokret</label></div>
+            <div class="radio-option"><input type="radio" id="viario_estiva" name="tipo_viario" value="Estiva"> <label for="viario_estiva">Estiva</label></div>
+        </div>
+    </div>
+    
+    <!-- Seção 10 - Responsável Técnico -->
+    <h2>Seção 10 - Responsável Técnico</h2>
+    <div class="form-group">
+      <label for="nome_responsavel">Nome/Rubrica:</label>
+      <textarea id="nome_responsavel" name="nome_responsavel"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="matricula_responsavel">Matrícula:</label>
+      <input id="matricula_responsavel" name="matricula_responsavel" type="text" inputmode="text" />
+    </div>
+    <div class="form-group">
+      <label for="data_medicao">Data Medição:</label>
+      <input id="data_medicao" name="data_medicao" type="date" />
+    </div>
+    <div class="form-group">
+      <label for="padrao_construcao">Padrão de construção:</label>
+      <input id="padrao_construcao" name="padrao_construcao" type="text" inputmode="text" />
+    </div>
+    <div class="form-group">
+      <label for="matricula_imovel">Matrícula do imóvel:</label>
+      <input id="matricula_imovel" name="matricula_imovel" type="text" inputmode="text" />
+    </div>
+
+    <!-- NOVA SEÇÃO 11 - OBSERVAÇÕES -->
+    <h2>Seção 11 - Observações</h2>
+    <div class="form-group">
+      <label for="observacoes">Observações (anotações livres):</label>
+      <textarea id="observacoes" name="observacoes" rows="4"></textarea>
+    </div>
+
+    <button type="button" id="btnToggleCroqui" class="btn-toggle-croqui" onclick="toggleCroquiEditor()">
+      <i class="fas fa-drafting-compass"></i> Habilitar Editor de Croqui
+    </button>
+    
+    <!-- Seção 12 - Editor de Croqui (Inicia oculto) -->
+    <div id="sec-croqui-container" style="display: none;">
+      <h2>Seção 12 - Editor de Croqui</h2>
+      <div class="form-group">
+        <div id="cad-toolbar">
+          <button type="button" onclick="setTool('select')"><i class="fas fa-mouse-pointer"></i> <span class="tool-label">Selecionar</span></button>
+          <button type="button" onclick="setTool('line')"><i class="fas fa-slash"></i> <span class="tool-label">Linha</span></button>
+          <button type="button" onclick="setTool('freehand')"><i class="fas fa-pen"></i> <span class="tool-label">Mão Livre</span></button>
+          <button type="button" onclick="setTool('rectangle')"><i class="fas fa-square"></i> <span class="tool-label">Retângulo</span></button>
+          <button type="button" onclick="setTool('circle')"><i class="fas fa-circle"></i> <span class="tool-label">Círculo</span></button>
+          <button type="button" onclick="setTool('text')"><i class="fas fa-font"></i> <span class="tool-label">Texto</span></button>
+          <button type="button" onclick="limparCanvas()"><i class="fas fa-eraser"></i> <span class="tool-label">Limpar</span></button>
+          
+          <span style="margin-left: 5px;">Cor:</span>
+          <input type="color" id="colorPicker" value="#000000" onchange="setColor(this.value)" class="color-picker">
+          
+          <span style="margin-left: 5px;">Espessura:</span>
+          <select onchange="setStrokeWidth(this.value)" style="padding: 4px;">
+            <option value="1">Fina</option>
+            <option value="2" selected>Média</option>
+            <option value="3">Grossa</option>
+            <option value="5">Muito Grossa</option>
+          </select>
+        </div>
+        <div id="cad-canvas-wrapper">
+          <canvas id="cad-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <button id="gerarResultado" type="button">Gerar Resultado Completo</button>
+  </form>
+
+  <div id="result"></div>
+
+  <div id="export-buttons">
+    <button id="exportTxt" type="button">📄 Baixar TXT</button>
+    <button id="exportPdf" type="button">📥 Baixar PDF</button>
+    <button id="exportCsv" type="button">📊 Baixar CSV</button>
+    <button id="uploadSystem" type="button">☁️ Enviar para o Sistema</button>
+    <button id="exportEmail" type="button">📧 Enviar por E-mail</button>
+    <button id="exportWhatsApp" type="button">📱 Compartilhar WhatsApp</button>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    // ============================================================
+    //  PARTE 1: Configuração do croqui e funções auxiliares
+    // ============================================================
+    let croquiHabilitado = false;
+    let imagensCarregadas = [];
+    let canvasInstance = null;
+
+    function initCanvas() {
+      const container = document.getElementById('cad-canvas-wrapper');
+      if (!container) return;
+      const width = container.clientWidth;
+      const height = width * (400 / 600);
+      canvasInstance = new fabric.Canvas('cad-canvas', {
+        width, height,
+        backgroundColor: '#ffffff',
+        selection: true,
+        preserveObjectStacking: true
+      });
+      window.addEventListener('resize', () => {
+        if (!canvasInstance) return;
+        const newWidth = container.clientWidth;
+        const newHeight = newWidth * (400 / 600);
+        canvasInstance.setWidth(newWidth);
+        canvasInstance.setHeight(newHeight);
+        canvasInstance.renderAll();
+      });
+      setupCanvasEvents();
+      setTool('select');
+    }
+
+    function toggleCroquiEditor() {
+      croquiHabilitado = !croquiHabilitado;
+      const container = document.getElementById("sec-croqui-container");
+      const btn = document.getElementById("btnToggleCroqui");
+      if (croquiHabilitado) {
+        container.style.display = "block";
+        btn.classList.add("ativo");
+        btn.innerHTML = '<i class="fas fa-times"></i> Desabilitar Editor de Croqui';
+        if (!canvasInstance) setTimeout(initCanvas, 100);
+        else {
+          const wrapper = document.getElementById('cad-canvas-wrapper');
+          const width = wrapper.clientWidth;
+          const height = width * (400 / 600);
+          canvasInstance.setWidth(width);
+          canvasInstance.setHeight(height);
+          canvasInstance.renderAll();
+        }
+      } else {
+        container.style.display = "none";
+        btn.classList.remove("ativo");
+        btn.innerHTML = '<i class="fas fa-drafting-compass"></i> Habilitar Editor de Croqui';
+      }
+    }
+
+    function atualizarCodigoCartografico() {
+      const d = document.getElementById('distrito').value.padStart(2, '0').slice(-2);
+      const q = document.getElementById('quadra').value.padStart(3, '0').slice(-3);
+      const l = document.getElementById('lote').value.padStart(4, '0').slice(-4);
+      const c = document.getElementById('complemento').value.padStart(3, '0').slice(-3);
+      const dv = document.getElementById('dv').value.padStart(1, '0').slice(-1);
+      const formatado = `${d}.${q}.${l}.${c}.${dv}`;
+      document.getElementById('codigo_cartografico_display').textContent = formatado;
+      document.getElementById('codigo_cartografico_completo').value = formatado;
+    }
+
+    function verificarNaoConstruido(elem) {
+      if (elem.value === "Não Construído" && elem.checked) {
+        const nomes = ['tipo_edificacao','tipo_esquadria','garagem','tipo_alinhamento',
+          'tipo_situacao_unidade','tipo_forro','tipo_vidros','tipo_ocupacao',
+          'piscina','tipo_conservacao','tipo_situacao_edif','tipo_estrutura',
+          'tipo_acabamento_interno','tipo_acabamento_externo','tipo_cobertura',
+          'tipo_sanitario','tipo_piso','tipo_instalacao_eletrica'];
+        nomes.forEach(n => {
+          const radio = document.querySelector(`input[name="${n}"][value="Não se aplica"]`);
+          if (radio) radio.checked = true;
+        });
+      }
+    }
+
+    let currentColor = '#000000', strokeWidth = 2, isDrawing = false, tempObject = null, startPoint = null, currentTool = 'select';
+
+    function setTool(tool) {
+      currentTool = tool;
+      if (!canvasInstance) return;
+      canvasInstance.isDrawingMode = false;
+      canvasInstance.selection = (tool === 'select');
+      if (tool === 'line' || tool === 'freehand') {
+        canvasInstance.isDrawingMode = true;
+        if (tool === 'freehand') {
+          canvasInstance.freeDrawingBrush = new fabric.PencilBrush(canvasInstance);
+          canvasInstance.freeDrawingBrush.width = strokeWidth;
+          canvasInstance.freeDrawingBrush.color = currentColor;
+        } else canvasInstance.isDrawingMode = false;
+      }
+      canvasInstance.defaultCursor = tool === 'select' ? 'default' : 'crosshair';
+    }
+
+    function setColor(color) {
+      currentColor = color;
+      document.getElementById('colorPicker').value = color;
+      if (canvasInstance?.freeDrawingBrush) canvasInstance.freeDrawingBrush.color = color;
+    }
+
+    function setStrokeWidth(width) {
+      strokeWidth = width;
+      if (canvasInstance?.freeDrawingBrush) canvasInstance.freeDrawingBrush.width = width;
+    }
+
+    function setupCanvasEvents() {
+      if (!canvasInstance) return;
+      canvasInstance.on('mouse:down', function(options) {
+        const pointer = canvasInstance.getPointer(options.e);
+        startPoint = pointer;
+        if (currentTool === 'rectangle') {
+          isDrawing = true;
+          tempObject = new fabric.Rect({ left: pointer.x, top: pointer.y, width: 1, height: 1, fill: 'transparent', stroke: currentColor, strokeWidth });
+          canvasInstance.add(tempObject);
+        } else if (currentTool === 'circle') {
+          isDrawing = true;
+          tempObject = new fabric.Circle({ left: pointer.x, top: pointer.y, radius: 1, fill: 'transparent', stroke: currentColor, strokeWidth });
+          canvasInstance.add(tempObject);
+        } else if (currentTool === 'line') {
+          isDrawing = true;
+          tempObject = new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y], { stroke: currentColor, strokeWidth, selectable: true });
+          canvasInstance.add(tempObject);
+        } else if (currentTool === 'text') {
+          const text = new fabric.IText('', { left: pointer.x, top: pointer.y, fontSize: 16, fill: currentColor, fontFamily: 'Arial', hasControls: true });
+          canvasInstance.add(text);
+          text.enterEditing();
+          text.selectAll();
+        }
+      });
+      canvasInstance.on('mouse:move', function(options) {
+        if (!isDrawing || !tempObject) return;
+        const pointer = canvasInstance.getPointer(options.e);
+        if (currentTool === 'rectangle' && tempObject.type === 'rect') {
+          tempObject.set({ width: Math.abs(pointer.x - tempObject.left), height: Math.abs(pointer.y - tempObject.top) });
+        } else if (currentTool === 'circle' && tempObject.type === 'circle') {
+          const radius = Math.sqrt(Math.pow(pointer.x - tempObject.left, 2) + Math.pow(pointer.y - tempObject.top, 2));
+          tempObject.set({ radius });
+        } else if (currentTool === 'line' && tempObject.type === 'line') {
+          tempObject.set({ x2: pointer.x, y2: pointer.y });
+        }
+        canvasInstance.renderAll();
+      });
+      canvasInstance.on('mouse:up', function() {
+        isDrawing = false;
+        tempObject = null;
+        startPoint = null;
+      });
+    }
+
+    function limparCanvas() {
+      if (!canvasInstance) return;
+      if (confirm('Tem certeza que deseja limpar todo o desenho?')) {
+        canvasInstance.clear();
+        canvasInstance.backgroundColor = '#ffffff';
+        canvasInstance.renderAll();
+      }
+    }
+
+    function getNomeArquivo(tipo) {
+      const nome = document.getElementById('nome_proprietario').value;
+      const nomeFormatado = nome
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '_').toLowerCase().substring(0,50);
+      const dataAtual = new Date().toISOString().split('T')[0];
+      return `bic_${nomeFormatado || 'relatorio'}_${dataAtual}_${tipo}`;
+    }
+
+    const padroesEdificacao = {
+      BAIXO: {
+        tipo_edificacao: "Casa", tipo_estrutura: "Alvenaria", tipo_acabamento_externo: "Caiação",
+        tipo_acabamento_interno: "Caiação", tipo_instalacao_eletrica: "Sem", tipo_situacao_unidade: "Frente",
+        tipo_forro: "Sem", tipo_esquadria: "Madeira", tipo_sanitario: "Sem", tipo_utilizacao: "Residencial",
+        tipo_alinhamento: "Alinhada", tipo_cobertura: "Telha Amianto", tipo_conservacao: "Regular",
+        tipo_piso: "Sem", tipo_ocupacao: "Desocupado", padrao_construcao: "Baixo", tipo_situacao_edif: "Isolada"
+      },
+      NORMAL: {
+        tipo_edificacao: "Casa", tipo_estrutura: "Alvenaria", tipo_acabamento_externo: "Pintura",
+        tipo_acabamento_interno: "Material Cerâmico", tipo_instalacao_eletrica: "Embutida",
+        tipo_situacao_unidade: "Frente", tipo_forro: "Madeira", tipo_esquadria: "Madeira",
+        tipo_sanitario: "Interna Simples", tipo_utilizacao: "Residencial", tipo_alinhamento: "Alinhada",
+        tipo_cobertura: "Telha Amianto", tipo_conservacao: "Nova/Ótima", tipo_piso: "Cerâmica Popular",
+        tipo_ocupacao: "Ocupado", padrao_construcao: "Normal", tipo_situacao_edif: "Isolada"
+      }
+    };
+
+    function aplicarPadraoEdificacao(padrao) {
+      if (confirm(`Deseja aplicar o padrão ${padrao} à edificação?`)) {
+        const dadosPadrao = padroesEdificacao[padrao];
+        for (const [campo, valor] of Object.entries(dadosPadrao)) {
+          const radio = document.querySelector(`input[name="${campo}"][value="${valor}"]`);
+          if (radio) { radio.checked = true; continue; }
+          const input = document.querySelector(`[name="${campo}"]`);
+          if (input && input.type !== 'radio' && input.type !== 'checkbox') input.value = valor;
+        }
+        alert(`Padrão ${padrao} aplicado com sucesso!`);
+      }
+    }
+
+    // ============================================================
+    //  PARTE 2: GERAR PDF COM A ORDEM DO SISTEMA (PASSOS 1 a 9)
+    // ============================================================
+    function gerarPDFBlob(data) {
+      return new Promise((resolve, reject) => {
+        try {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
+          let y = 15;
+
+          // Função auxiliar para adicionar seção com fundo
+          function adicionarSecao(titulo) {
+            if (y > 265) { doc.addPage(); y = 20; }
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.setFillColor(230, 230, 230);
+            doc.rect(15, y, 180, 6, "F");
+            doc.setTextColor(0, 0, 0);
+            doc.text(titulo, 18, y + 4.5);
+            y += 10;
+          }
+
+          // Função para imprimir um campo (rótulo e valor em linhas separadas)
+          function imprimirCampo(label, valor) {
+            if (y > 270) { doc.addPage(); y = 20; }
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "bold");
+            doc.text(label + ":", 15, y);
+            y += 5;
+            doc.setFont("helvetica", "normal");
+            const lines = doc.splitTextToSize(String(valor || "____________________"), 170);
+            lines.forEach(line => {
+              if (y > 270) { doc.addPage(); y = 20; }
+              doc.text(line, 20, y);
+              y += 6;
+            });
+            y += 2;
+          }
+
+          // Função para imprimir tabela vazia (3 colunas, 5 linhas)
+          function imprimirTabelaVazia(titulo, colunas) {
+            if (y > 250) { doc.addPage(); y = 20; }
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "bold");
+            doc.text(titulo, 15, y);
+            y += 6;
+            doc.setFont("helvetica", "normal");
+            // cabeçalho
+            let x = 15;
+            const largura = 50;
+            colunas.forEach(col => {
+              doc.text(col, x, y);
+              x += largura;
+            });
+            y += 4;
+            // 5 linhas vazias
+            for (let i = 0; i < 5; i++) {
+              if (y > 270) { doc.addPage(); y = 20; }
+              x = 15;
+              for (let j = 0; j < colunas.length; j++) {
+                doc.text("____________________", x, y);
+                x += largura;
+              }
+              y += 6;
+            }
+            y += 4;
+          }
+
+          // ===== SEÇÃO 1 – Dados do Imóvel =====
+          adicionarSecao("1. Dados do Imóvel");
+          imprimirCampo("Identificador", "");  // novo
+          imprimirCampo("CIF", data.dados['cif']);
+          imprimirCampo("Inscrição Imobiliária", data.dados['codigo_cartografico_completo']);
+          imprimirCampo("Inscrição Imobiliária Anterior", "");
+          imprimirCampo("Data de Criação", data.dados['data_abertura']);
+          imprimirCampo("Natureza do Imóvel", "");
+          imprimirCampo("Situação Tributária", "");
+          imprimirCampo("Valor Venal Informado", "");
+          imprimirCampo("Valor Venal Calculado", "");
+          imprimirCampo("Englobado", "");
+          imprimirCampo("Matrícula do Imóvel", data.dados['matricula_imovel']);
+
+          // ===== SEÇÃO 2 – Localização =====
+          adicionarSecao("2. Localização");
+          imprimirCampo("CEP", data.dados['cep']);
+          imprimirCampo("Estado", "");
+          imprimirCampo("Cidade", "");
+          imprimirCampo("Código Logradouro", data.dados['codigo_logradouro']);
+          imprimirCampo("Tipo de Logradouro", "");
+          imprimirCampo("Logradouro", data.dados['tipo_nome_logradouro']);
+          imprimirCampo("Bairro", data.dados['bairro']);
+          imprimirCampo("Complemento", data.dados['complemento_endereco']);
+          imprimirCampo("Número", data.dados['numero_imovel']);
+          imprimirCampo("Edifício", "");
+          imprimirCampo("Loteamento", "");
+          imprimirCampo("Zona", data.dados['zona']);
+          imprimirCampo("Distrito", "");
+          imprimirCampo("Quadra", data.dados['quadra']);
+          imprimirCampo("Número do Lote", data.dados['lote']);
+          imprimirCampo("Descrição Imobiliária", "");
+          imprimirCampo("Água", data.dados['tipo_agua']);
+          imprimirCampo("Equipamento Urbano", data.dados['equip_urbanos']);
+          imprimirCampo("Esgoto", data.dados['esgoto']);
+          imprimirCampo("Sistema Viário", data.dados['tipo_viario']);
+          imprimirCampo("Telefone", "");
+          imprimirCampo("Energia Elétrica", data.dados['tipo_energia']);
+          imprimirCampo("Arborização", data.dados['tipo_arborizacao']);
+          imprimirCampo("Guia e Sarjeta", data.dados['tipo_Guias/Sarjetas']);
+          imprimirCampo("Geolocalização", data.localizacao || "");
+          imprimirCampo("Pavimentação", "");
+          imprimirCampo("Conservação do Pavimento", "");
+          imprimirCampo("Meio Fio", "");
+
+          // ===== SEÇÃO 3 – Endereço para Correspondência =====
+          adicionarSecao("3. Endereço para Correspondência");
+          imprimirCampo("Usar Endereço de correspondência diferente", "");
+          imprimirCampo("CEP", "");
+          imprimirCampo("Logradouro", "");
+          imprimirCampo("Complemento", "");
+          imprimirCampo("Ponto de Referência", "");
+          imprimirCampo("Estado", "");
+          imprimirCampo("Cidade", "");
+          imprimirCampo("Tipo de Logradouro", "");
+          imprimirCampo("Bairro", "");
+
+          // ===== SEÇÃO 4 – Proprietários =====
+          adicionarSecao("4. Proprietários");
+          imprimirCampo("CPF/CNPJ", data.dados['cpf_proprietario']);
+          imprimirCampo("Nome/Razão Social", data.dados['nome_proprietario']);
+          imprimirCampo("Tipo de Responsável", "");
+          imprimirCampo("Responsável pelo crédito tributário", "");
+          imprimirCampo("Percentual do Imóvel", "");
+          imprimirCampo("Responsável Tributário", "");
+          imprimirCampo("Responsável Titular", "");
+          imprimirCampo("Data Aquisição", "");
+          imprimirCampo("Data Transmissão", "");
+
+          // ===== SEÇÃO 5 – Informações sobre o Lote/Terreno =====
+          adicionarSecao("5. Informações sobre o Lote/Terreno");
+          imprimirCampo("Ocupação do Terreno/Lote", data.dados['ocupacao_lote']);
+          imprimirCampo("Situação Quadra", data.dados['situacao_quadra']);
+          imprimirCampo("Patrimônio", data.dados['patrimonio']);
+          imprimirCampo("Topografia", data.dados['topografia']);
+          imprimirCampo("Limitação", data.dados['limitacao']);
+          imprimirCampo("Pedologia", data.dados['pedologia']);
+
+          // ===== SEÇÃO 6 – Informações sobre Testadas =====
+          adicionarSecao("6. Informações sobre Testadas");
+          imprimirCampo("Testada Principal", data.dados['testada']);
+          imprimirTabelaVazia("Testadas:", ["Logradouro", "Cód. Logradouro", "Medida (m)"]);
+
+          // ===== SEÇÃO 7 – Medidas do Imóvel =====
+          adicionarSecao("7. Medidas do Imóvel");
+          imprimirCampo("Profundidade", data.dados['profundidade']);
+          imprimirCampo("Área do Lote/Terreno", data.dados['area_terreno']);
+          imprimirCampo("Área Construída do Lote", data.dados['area_total_edificada']);
+          imprimirCampo("Número de Pavimentos", "");
+          imprimirCampo("Área Construída da Unidade", data.dados['area_edif_unidade']);
+
+          // ===== SEÇÃO 8 – Informações sobre a Edificação =====
+          adicionarSecao("8. Informações sobre a Edificação");
+          imprimirCampo("Tipologia/Edificação", data.dados['tipo_edificacao']);
+          imprimirCampo("Revestimento Fachada", "");
+          imprimirCampo("Garagem/Abrigo", data.dados['garagem']);
+          imprimirCampo("Instalação Elétrica", data.dados['tipo_instalacao_eletrica']);
+          imprimirCampo("Situação da Edificação", data.dados['tipo_situacao_unidade']);
+          imprimirCampo("Vidro", data.dados['tipo_vidros']);
+          imprimirCampo("Padrão de Construção", data.dados['padrao_construcao']);
+          imprimirCampo("Estrutura", data.dados['tipo_estrutura']);
+          imprimirCampo("Área Madeira", "");
+          imprimirCampo("Área Alvenaria", "");
+          imprimirCampo("Área Gleba", "");
+          imprimirCampo("Posicionamento", data.dados['tipo_situacao_edif']);
+          imprimirCampo("Forro", data.dados['tipo_forro']);
+          imprimirCampo("Esquadrias", data.dados['tipo_esquadria']);
+          imprimirCampo("Instalação Sanitária", data.dados['tipo_sanitario']);
+          imprimirCampo("Tipo de Utilização", data.dados['utilizacao']);
+          imprimirCampo("Alinhamento", data.dados['tipo_alinhamento']);
+          imprimirCampo("Cobertura", data.dados['tipo_cobertura']);
+          imprimirCampo("CONSERVAÇÃO", data.dados['tipo_conservacao']);
+          imprimirCampo("Piso", data.dados['tipo_piso']);
+          imprimirCampo("OCUPAÇÃO", data.dados['tipo_ocupacao']);
+
+          // ===== SEÇÃO 9 – Informações Adicionais =====
+          adicionarSecao("9. Informações Adicionais");
+          imprimirCampo("Revestimento Interno (LAJE)", "");
+          imprimirCampo("Piscina", data.dados['piscina']);
+          imprimirCampo("Observação", "");
+          imprimirCampo("Coleta de Lixo", data.dados['tipo_lixo']);
+          imprimirCampo("Tipo de Coleta", "");
+          imprimirTabelaVazia("Resíduo(s) Sólido(s) do Imóvel:", ["Código", "Faixa", "Tipo de Coleta"]);
+          imprimirTabelaVazia("Serviços no Imóvel:", ["Código", "Nome"]);
+
+          // ===== (Opcional) Incluir fotos e croqui =====
+          if (data.fotos && data.fotos.length > 0) {
+            doc.addPage();
+            y = 20;
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.text("REGISTRO FOTOGRÁFICO DO IMÓVEL", 105, y, { align: 'center' });
+            y += 15;
+            data.fotos.forEach((imgBase64) => {
+              if (y > 200) { doc.addPage(); y = 20; }
+              try {
+                const imgProps = doc.getImageProperties(imgBase64);
+                const w = 120;
+                const h = (imgProps.height * w) / imgProps.width;
+                doc.addImage(imgBase64, 'JPEG', 15, y, w, h);
+                y += h + 8;
+              } catch(e) { console.error("Erro ao adicionar foto:", e); }
+            });
+          }
+
+          if (data.croquiAtivo && data.imagem) {
+            doc.addPage();
+            y = 20;
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.text("CROQUI TÉCNICO", 105, y, { align: 'center' });
+            y += 15;
+            try {
+              const imgProps = doc.getImageProperties(data.imagem);
+              const pdfWidth = doc.internal.pageSize.getWidth() - 30;
+              const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+              doc.addImage(data.imagem, 'PNG', 15, y, pdfWidth, pdfHeight);
+            } catch(e) { console.error("Erro ao inserir croqui:", e); }
+          }
+
+          resolve(doc.output('blob'));
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }
+
+    // ============================================================
+    //  PARTE 3: Eventos de geração e exportação
+    // ============================================================
+    document.getElementById("gerarResultado").addEventListener("click", function() {
+      const form = document.getElementById("bicForm");
+      const resultDiv = document.getElementById("result");
+      const exportButtons = document.getElementById("export-buttons");
+
+      if (!document.getElementById('nome_proprietario').value) {
+        alert("Por favor, preencha o nome do proprietário antes de gerar o relatório.");
+        return;
+      }
+
+      atualizarCodigoCartografico();
+
+      let dados = {};
+      const inputs = form.querySelectorAll("input, textarea, select");
+      inputs.forEach(input => {
+        if ((input.type === "radio" && input.checked) || input.type !== "radio") {
+          if (input.name && input.value) dados[input.name] = input.value;
+        }
+      });
+
+      const imagemDesenho = (croquiHabilitado && canvasInstance) ? canvasInstance.toDataURL("image/png") : null;
+      
+      let html = `<h3>BOLETIM DE INFORMAÇÕES CADASTRAIS</h3>`;
+      html += `<h4>Proprietário: ${document.getElementById('nome_proprietario').value}</h4>`;
+      html += '<div style="line-height:1.8;">';
+      for (const [chave, valor] of Object.entries(dados)) {
+        const label = chave.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        if (chave === 'localizacao-coordenadas') continue;
+        html += `<p><strong>${label}:</strong> ${valor}</p>`;
+      }
+      const coord = document.getElementById('localizacao-coordenadas').value;
+      if (coord) html += `<p><strong>Geolocalização:</strong> ${coord}</p>`;
+      html += '</div>';
+
+      if (imagensCarregadas.length > 0) {
+        html += `<h3>Imagens do Imóvel:</h3><div style="display:flex; gap:10px; flex-wrap:wrap;">`;
+        imagensCarregadas.forEach(img => {
+          html += `<img src="${img}" style="max-width:120px; border:1px solid #ccc; border-radius:4px;">`;
+        });
+        html += `</div>`;
+      }
+
+      if (croquiHabilitado && imagemDesenho) {
+        html += `<h3>Croqui Técnico:</h3><img src="${imagemDesenho}" style="max-width:100%; border:1px solid #ccc;" alt="Desenho">`;
+      }
+
+      resultDiv.innerHTML = html;
+      exportButtons.style.display = 'block';
+
+      window.currentReportData = {
+        dados: dados,
+        imagem: imagemDesenho,
+        croquiAtivo: croquiHabilitado,
+        localizacao: coord,
+        nomeProprietario: document.getElementById('nome_proprietario').value,
+        fotos: imagensCarregadas
+      };
+    });
+
+    // Exportar TXT
+    document.getElementById("exportTxt").addEventListener("click", function() {
+      if (!window.currentReportData) return alert("Gere o relatório primeiro.");
+      const data = window.currentReportData;
+      let txt = "BOLETIM DE INFORMAÇÕES CADASTRAIS\n\n";
+      txt += `Proprietário: ${data.nomeProprietario}\n`;
+      if (data.localizacao) txt += `Geolocalização: ${data.localizacao}\n`;
+      txt += `\n`;
+      for (const [k, v] of Object.entries(data.dados)) {
+        txt += `${k.replace(/_/g, ' ')}: ${v}\n`;
+      }
+      const blob = new Blob([txt], {type: "text/plain;charset=utf-8"});
+      saveAs(blob, getNomeArquivo("relatorio") + ".txt");
+    });
+
+    // Exportar CSV
+    document.getElementById("exportCsv").addEventListener("click", function() {
+      if (!window.currentReportData) return alert("Gere o relatório primeiro.");
+      const data = window.currentReportData;
+      let csv = "Campo,Valor\n";
+      if (data.localizacao) csv += `"Geolocalização","${data.localizacao}"\n`;
+      for (const [k, v] of Object.entries(data.dados)) {
+        csv += `"${k}","${v}"\n`;
+      }
+      const blob = new Blob([csv], {type: "text/csv;charset=utf-8"});
+      saveAs(blob, getNomeArquivo("dados") + ".csv");
+    });
+
+    // Exportar PDF (usa a nova função com a ordem do sistema)
+    document.getElementById("exportPdf").addEventListener("click", function() {
+      if (!window.currentReportData) return alert("Gere o relatório primeiro.");
+      gerarPDFBlob(window.currentReportData)
+        .then(blob => saveAs(blob, getNomeArquivo("completo") + ".pdf"))
+        .catch(err => alert("Erro ao gerar PDF: " + err.message));
+    });
+
+    // Compartilhar por e-mail
+    document.getElementById("exportEmail").addEventListener("click", function() {
+      if (!window.currentReportData) return alert("Gere o relatório primeiro.");
+      gerarPDFBlob(window.currentReportData)
+        .then(blob => {
+          const file = new File([blob], getNomeArquivo("completo") + ".pdf", { type: 'application/pdf' });
+          if (navigator.share) {
+            navigator.share({ title: 'Boletim de Informações Cadastrais', text: 'Segue o BIC do imóvel.', files: [file] })
+              .catch(err => { if (err.name !== 'AbortError') alert('Erro ao compartilhar: ' + err.message); });
+          } else {
+            saveAs(blob, getNomeArquivo("completo") + ".pdf");
+            alert('Seu navegador não suporta compartilhamento direto. O arquivo foi baixado; anexe-o manualmente ao seu e-mail.');
+          }
+        })
+        .catch(err => alert("Erro ao gerar PDF: " + err.message));
+    });
+
+    // Compartilhar WhatsApp
+    document.getElementById("exportWhatsApp").addEventListener("click", function() {
+      if (!window.currentReportData) return alert("Gere o relatório primeiro.");
+      gerarPDFBlob(window.currentReportData)
+        .then(blob => {
+          const file = new File([blob], getNomeArquivo("completo") + ".pdf", { type: 'application/pdf' });
+          if (navigator.share) {
+            navigator.share({ title: 'Boletim de Informações Cadastrais', text: 'Segue o BIC do imóvel.', files: [file] })
+              .catch(err => { if (err.name !== 'AbortError') alert('Erro ao compartilhar: ' + err.message); });
+          } else {
+            const texto = encodeURIComponent('Olá, segue o Boletim de Informações Cadastrais (BIC) do imóvel. O arquivo PDF será enviado em anexo (ou baixe anexando manualmente).');
+            window.open(`https://api.whatsapp.com/send?text=${texto}`, '_blank');
+            saveAs(blob, getNomeArquivo("completo") + ".pdf");
+            alert('O PDF foi baixado. Anexe-o à conversa do WhatsApp manualmente.');
+          }
+        })
+        .catch(err => alert("Erro ao gerar PDF: " + err.message));
+    });
+
+    // Enviar para sistema (simulação)
+    document.getElementById("uploadSystem").addEventListener("click", function() {
+      if (!window.currentReportData) return alert("Gere o relatório primeiro.");
+      alert("Enviando relatório para o sistema...");
+    });
+
+    // ============================================================
+    //  PARTE 4: Geolocalização e upload de imagens
+    // ============================================================
+    function obterLocalizacao() {
+      const info = document.getElementById("info-localizacao");
+      if (!navigator.geolocation) {
+        info.textContent = "Geolocalização não é suportada.";
+        return;
+      }
+      info.textContent = "Obtendo localização...";
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude.toFixed(6);
+          const lng = pos.coords.longitude.toFixed(6);
+          document.getElementById("localizacao-coordenadas").value = `${lat}, ${lng}`;
+          info.textContent = `Localização: ${lat}, ${lng}`;
+        },
+        () => { info.textContent = "Não foi possível obter a localização."; }
+      );
+    }
+
+    document.getElementById("imagens-local").addEventListener("change", function() {
+      const preview = document.getElementById("preview-imagens");
+      preview.innerHTML = "";
+      imagensCarregadas = [];
+      const files = this.files;
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const base64 = e.target.result;
+          imagensCarregadas.push(base64);
+          const img = document.createElement("img");
+          img.src = base64;
+          img.style.maxWidth = "120px";
+          img.style.marginRight = "10px";
+          img.style.borderRadius = "4px";
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(files[i]);
+      }
+    });
+
+    // ============================================================
+    //  INICIALIZAÇÃO
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      setTool('select');
+    });
+
+    // Expor funções globalmente
+    window.toggleCroquiEditor = toggleCroquiEditor;
+    window.atualizarCodigoCartografico = atualizarCodigoCartografico;
+    window.verificarNaoConstruido = verificarNaoConstruido;
+    window.setTool = setTool;
+    window.setColor = setColor;
+    window.setStrokeWidth = setStrokeWidth;
+    window.limparCanvas = limparCanvas;
+    window.aplicarPadraoEdificacao = aplicarPadraoEdificacao;
+    window.obterLocalizacao = obterLocalizacao;
+  </script>
+</body>
+</html>
