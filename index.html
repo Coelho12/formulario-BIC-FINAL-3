@@ -1189,7 +1189,6 @@
           const doc = new jsPDF();
           let y = 15;
 
-          // Função auxiliar para adicionar seção com fundo
           function adicionarSecao(titulo) {
             if (y > 265) { doc.addPage(); y = 20; }
             doc.setFontSize(11);
@@ -1201,7 +1200,6 @@
             y += 10;
           }
 
-          // Função para imprimir um campo (rótulo e valor em linhas separadas)
           function imprimirCampo(label, valor) {
             if (y > 270) { doc.addPage(); y = 20; }
             doc.setFontSize(9);
@@ -1218,7 +1216,6 @@
             y += 2;
           }
 
-          // Função para imprimir tabela vazia (3 colunas, 5 linhas)
           function imprimirTabelaVazia(titulo, colunas) {
             if (y > 250) { doc.addPage(); y = 20; }
             doc.setFontSize(9);
@@ -1226,7 +1223,6 @@
             doc.text(titulo, 15, y);
             y += 6;
             doc.setFont("helvetica", "normal");
-            // cabeçalho
             let x = 15;
             const largura = 50;
             colunas.forEach(col => {
@@ -1234,7 +1230,6 @@
               x += largura;
             });
             y += 4;
-            // 5 linhas vazias
             for (let i = 0; i < 5; i++) {
               if (y > 270) { doc.addPage(); y = 20; }
               x = 15;
@@ -1249,7 +1244,7 @@
 
           // ===== SEÇÃO 1 – Dados do Imóvel =====
           adicionarSecao("1. Dados do Imóvel");
-          imprimirCampo("Identificador", "");  // novo
+          imprimirCampo("Identificador", "");
           imprimirCampo("CIF", data.dados['cif']);
           imprimirCampo("Inscrição Imobiliária", data.dados['codigo_cartografico_completo']);
           imprimirCampo("Inscrição Imobiliária Anterior", "");
@@ -1372,7 +1367,7 @@
           imprimirTabelaVazia("Resíduo(s) Sólido(s) do Imóvel:", ["Código", "Faixa", "Tipo de Coleta"]);
           imprimirTabelaVazia("Serviços no Imóvel:", ["Código", "Nome"]);
 
-          // ===== (Opcional) Incluir fotos e croqui =====
+          // ===== FOTOS ===== (CORRIGIDO: detecção automática de formato)
           if (data.fotos && data.fotos.length > 0) {
             doc.addPage();
             y = 20;
@@ -1380,18 +1375,29 @@
             doc.setFont("helvetica", "bold");
             doc.text("REGISTRO FOTOGRÁFICO DO IMÓVEL", 105, y, { align: 'center' });
             y += 15;
-            data.fotos.forEach((imgBase64) => {
+
+            data.fotos.forEach((imgData) => {
               if (y > 200) { doc.addPage(); y = 20; }
               try {
-                const imgProps = doc.getImageProperties(imgBase64);
+                // Detecta formato automaticamente
+                let format = 'JPEG';
+                if (imgData.startsWith('data:image/png')) {
+                  format = 'PNG';
+                } else if (imgData.startsWith('data:image/jpeg')) {
+                  format = 'JPEG';
+                }
+                const imgProps = doc.getImageProperties(imgData);
                 const w = 120;
                 const h = (imgProps.height * w) / imgProps.width;
-                doc.addImage(imgBase64, 'JPEG', 15, y, w, h);
+                doc.addImage(imgData, format, 15, y, w, h);
                 y += h + 8;
-              } catch(e) { console.error("Erro ao adicionar foto:", e); }
+              } catch(e) {
+                console.error("Erro ao adicionar foto ao PDF:", e);
+              }
             });
           }
 
+          // ===== CROQUI =====
           if (data.croquiAtivo && data.imagem) {
             doc.addPage();
             y = 20;
@@ -1404,7 +1410,9 @@
               const pdfWidth = doc.internal.pageSize.getWidth() - 30;
               const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
               doc.addImage(data.imagem, 'PNG', 15, y, pdfWidth, pdfHeight);
-            } catch(e) { console.error("Erro ao inserir croqui:", e); }
+            } catch(e) {
+              console.error("Erro ao inserir croqui:", e);
+            }
           }
 
           resolve(doc.output('blob'));
