@@ -591,7 +591,7 @@
     <div class="form-group"><label for="area_terreno">Área do Terreno:</label> <input id="area_terreno" name="area_terreno" type="text" required inputmode="decimal" /></div>
     <div class="form-group"><label for="area_edif_unidade">Área Edificada Unidade:</label> <input id="area_edif_unidade" name="area_edif_unidade" type="text" inputmode="decimal" /></div>
     <div class="form-group"><label for="area_total_edificada">Área Total Edificada:</label> <input id="area_total_edificada" name="area_total_edificada" type="text" required inputmode="decimal" /></div>
-    <div class="form-group"><label for="num_pavilhao">Nº do Pavilhão:</label> <input id="num_pavilhao" name="num_pavilhao" type="text" inputmode="numeric" /></div>
+    <div class="form-group"><label for="num_pavimentos">Número de Pavimentos:</label> <input id="num_pavimentos" name="num_pavimentos" type="text" inputmode="numeric" /></div>
     <div class="form-group"><label for="num_unidades">Nº das Unidades:</label> <input id="num_unidades" name="num_unidades" type="text" inputmode="numeric" /></div>
     
     <!-- Seção 8 - Informações sobre a Edificação -->
@@ -1330,7 +1330,7 @@
           imprimirCampo("Profundidade", data.dados['profundidade']);
           imprimirCampo("Área do Lote/Terreno", data.dados['area_terreno']);
           imprimirCampo("Área Construída do Lote", data.dados['area_total_edificada']);
-          imprimirCampo("Número de Pavimentos", "");
+          imprimirCampo("Número de Pavimentos", data.dados['num_pavimentos']);
           imprimirCampo("Área Construída da Unidade", data.dados['area_edif_unidade']);
 
           // ===== SEÇÃO 8 – Informações sobre a Edificação =====
