@@ -998,20 +998,37 @@
     let canvasInstance = null;
     let logoBase64 = null;
 
-    (function preloadLogo() {
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = function() {
-        try {
-          const canvas = document.createElement('canvas');
-          canvas.width = img.naturalWidth;
-          canvas.height = img.naturalHeight;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0);
-          logoBase64 = canvas.toDataURL('image/png');
-        } catch (e) {}
-      };
-      img.src = 'https://semad.ananindeua.pa.gov.br/ploa_2025/assets/imagens/logo.png';
+        (function preloadLogo() {
+      const urls = [
+        'https://images.weserv.nl/?url=semad.ananindeua.pa.gov.br/ploa_2025/assets/imagens/logo.png',
+        'https://corsproxy.io/?https://semad.ananindeua.pa.gov.br/ploa_2025/assets/imagens/logo.png',
+        'https://semad.ananindeua.pa.gov.br/ploa_2025/assets/imagens/logo.png'
+      ];
+      let idx = 0;
+      function tentar() {
+        if (idx >= urls.length) return;
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function() {
+          try {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            logoBase64 = canvas.toDataURL('image/png');
+          } catch (e) {
+            idx++;
+            tentar();
+          }
+        };
+        img.onerror = function() {
+          idx++;
+          tentar();
+        };
+        img.src = urls[idx];
+      }
+      tentar();
     })();
 
     function salvarRascunho() {
