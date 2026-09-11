@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>Boletim de Informações Cadastrais</title>
   <style>
-    /* ===== RESET E BASE ===== */
     * { box-sizing: border-box; }
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,14 +16,12 @@
         margin: 0 auto;
         -webkit-tap-highlight-color: transparent;
     }
-
     #bicForm {
         background-color: white;
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
-
     .header {
         display: flex;
         align-items: center;
@@ -46,7 +43,6 @@
         flex: 1;
         min-width: 150px;
     }
-
     h2 {
         color: #3498db;
         font-size: 1.2rem;
@@ -56,7 +52,6 @@
         border-bottom: 1px solid #eee;
         font-weight: 500;
     }
-
     .form-group {
         margin-bottom: 16px;
         padding: 12px;
@@ -71,7 +66,6 @@
         color: #2c3e50;
         font-size: 0.95rem;
     }
-
     input[type="text"],
     input[type="date"],
     input[type="number"],
@@ -95,7 +89,6 @@
         min-height: 80px;
         resize: vertical;
     }
-
     .radio-group {
         display: flex;
         flex-wrap: wrap;
@@ -130,7 +123,6 @@
         cursor: pointer;
         font-size: 0.95rem;
     }
-
     #gerarResultado {
         background-color: #3498db;
         color: white;
@@ -149,7 +141,6 @@
     #gerarResultado:hover {
         background-color: #2980b9;
     }
-
     #result {
         margin-top: 25px;
         padding: 15px;
@@ -159,7 +150,6 @@
         white-space: pre-wrap;
         word-break: break-word;
     }
-
     #cad-toolbar {
         display: flex;
         flex-wrap: wrap;
@@ -219,7 +209,6 @@
         }
         #cad-toolbar select { font-size: 0.8rem; padding: 6px 8px; }
     }
-
     #export-buttons {
         margin-top: 25px;
         padding: 15px;
@@ -252,7 +241,46 @@
     #uploadSystem { background-color: #9b59b6; color: white; }
     #exportEmail { background-color: #1e90ff; color: white; }
     #exportWhatsApp { background-color: #25D366; color: white; }
-
+    .container-rascunho {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0;
+        padding: 12px;
+        background: linear-gradient(135deg, #e8f4fc 0%, #f8f9fa 100%);
+        border-radius: 8px;
+        border-left: 4px solid #f39c12;
+        align-items: center;
+    }
+    .container-rascunho .titulo-rascunho {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 0.9rem;
+        margin-right: 6px;
+    }
+    .container-rascunho button {
+        border: none;
+        padding: 12px 16px;
+        min-height: 44px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        flex: 1 0 auto;
+        justify-content: center;
+        touch-action: manipulation;
+        min-width: 160px;
+    }
+    .container-rascunho button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
+    #btnSalvarRascunho { background-color: #f39c12; color: white; }
+    #btnRetomarRascunho { background-color: #16a085; color: white; }
     .container-botoes-rapidos {
         display: flex;
         flex-wrap: wrap;
@@ -284,7 +312,6 @@
     }
     .btn-padrao-baixo { background-color: #e74c3c; color: white; }
     .btn-padrao-normal { background-color: #2ecc71; color: white; }
-
     .btn-toggle-croqui {
         background-color: #27ae60;
         color: white;
@@ -306,7 +333,6 @@
     .btn-toggle-croqui.ativo {
         background-color: #c0392b;
     }
-
     .codigo-cartografico-preview {
         font-family: 'Courier New', Courier, monospace;
         font-size: 1.2rem;
@@ -321,7 +347,6 @@
         border: 1px dashed #3498db;
         word-break: break-all;
     }
-
     #cad-canvas-wrapper {
         position: relative;
         width: 100%;
@@ -341,7 +366,6 @@
         display: block;
         touch-action: none;
     }
-
     #preview-imagens {
         display: flex;
         flex-wrap: wrap;
@@ -356,7 +380,6 @@
         border: 1px solid #ddd;
         object-fit: cover;
     }
-
     #info-localizacao {
         font-size: 0.95rem;
         padding: 8px 0;
@@ -372,7 +395,6 @@
         touch-action: manipulation;
         margin-bottom: 8px;
     }
-
     @media (max-width: 768px) {
         .radio-group { flex-direction: column; gap: 8px; }
         .radio-option { width: 100%; }
@@ -387,8 +409,10 @@
         }
         .container-botoes-rapidos { flex-direction: column; }
         .btn-rapido { width: 100%; }
+        .container-rascunho { flex-direction: column; align-items: stretch; }
+        .container-rascunho button { width: 100%; min-width: unset; }
+        .container-rascunho .titulo-rascunho { text-align: center; }
     }
-
     @media (max-width: 480px) {
         body { padding: 6px; }
         #bicForm { padding: 12px; }
@@ -400,13 +424,11 @@
 </head>
 <body>
 
-  <!-- Cabeçalho -->
   <div class="header">
     <img src="https://semad.ananindeua.pa.gov.br/ploa_2025/assets/imagens/logo.png" alt="Logo da Prefeitura de Ananindeua">
     <h1>Secretaria Municipal de Gestão Fazendária</h1>
   </div>
 
-  <!-- Formulário -->
   <form id="bicForm">
     <h1>BOLETIM DE INFORMAÇÕES CADASTRAIS</h1>
 
@@ -420,14 +442,12 @@
     <h2>Imagens do Local</h2>
     <input type="file" id="imagens-local" multiple accept="image/*">
     <div id="preview-imagens"></div>
-    
-    <!-- Seção 1 - Protocolo / Memorando -->
+
     <h2>Seção 1 - Protocolo / Memorando</h2>
     <div class="form-group"><label for="protocolo_memorando">Nº Protocolo/Memorando:</label> <input id="protocolo_memorando" name="protocolo_memorando" type="text" inputmode="text" /></div>
     <div class="form-group"><label for="data_abertura">Data de Abertura:</label> <input id="data_abertura" name="data_abertura" type="date" /></div>
     <div class="form-group"><label for="cif">Cadastro de Informação Fiscal - CIF:</label> <input id="cif" name="cif" type="text" inputmode="text" /></div>
-    
-    <!-- Seção 2 - Tipo de Serviço -->
+
     <h2>Seção 2 - Tipo de Serviço</h2>
     <div class="form-group"><label>Tipo:</label>
       <div class="radio-group">
@@ -439,22 +459,20 @@
         <div class="radio-option"><input id="tipo_inclusao" name="tipo_servico" type="radio" value="Inclusão" /> <label for="tipo_inclusao">Inclusão</label></div>
       </div>
     </div>
-    
-    <!-- Seção 3 - Localização Cartográfica -->
+
     <h2>Seção 3 - Localização Cartográfica</h2>
     <div class="form-group"><label for="distrito">Distrito (2 dígitos):</label> <input id="distrito" name="distrito" type="text" maxlength="2" inputmode="numeric" oninput="atualizarCodigoCartografico()" /></div>
     <div class="form-group"><label for="quadra">Quadra (3 dígitos):</label> <input id="quadra" name="quadra" type="text" maxlength="3" inputmode="numeric" oninput="atualizarCodigoCartografico()" /></div>
     <div class="form-group"><label for="lote">Lote (4 dígitos):</label> <input id="lote" name="lote" type="text" maxlength="4" inputmode="numeric" oninput="atualizarCodigoCartografico()" /></div>
     <div class="form-group"><label for="complemento">Complemento (3 dígitos):</label> <input id="complemento" name="complemento" type="text" maxlength="3" inputmode="numeric" oninput="atualizarCodigoCartografico()" /></div>
     <div class="form-group"><label for="dv">DV (1 dígito):</label> <input id="dv" name="dv" type="text" maxlength="1" inputmode="numeric" oninput="atualizarCodigoCartografico()" /></div>
-    
+
     <div class="form-group">
       <label>Código Cartográfico Formatado:</label>
       <div id="codigo_cartografico_display" class="codigo-cartografico-preview">00.000.0000.000.0</div>
       <input type="hidden" id="codigo_cartografico_completo" name="codigo_cartografico_completo" value="00.000.0000.000.0">
     </div>
 
-    <!-- Seção 4 - Localização do Imóvel -->
     <h2>Seção 4 - Localização do Imóvel</h2>
     <div class="form-group"><label for="codigo_logradouro">Cód. Logradouro:</label> <input id="codigo_logradouro" name="codigo_logradouro" type="text" inputmode="text" /></div>
     <div class="form-group"><label for="tipo_nome_logradouro">Tipo/Nome Logradouro:</label> <input id="tipo_nome_logradouro" name="tipo_nome_logradouro" type="text" inputmode="text" /></div>
@@ -463,15 +481,13 @@
     <div class="form-group"><label for="complemento_endereco">Complemento:</label> <input id="complemento_endereco" name="complemento_endereco" type="text" inputmode="text" /></div>
     <div class="form-group"><label for="bairro">Bairro:</label> <input id="bairro" name="bairro" type="text" inputmode="text" /></div>
     <div class="form-group"><label for="referencia">Referência:</label> <input id="referencia" name="referencia" type="text" inputmode="text" /></div>
-    
-    <!-- Seção 5 - Proprietário / Titular -->
+
     <h2>Seção 5 - Proprietário / Titular</h2>
     <div class="form-group"><label for="nome_proprietario">Nome:</label> <input id="nome_proprietario" name="nome_proprietario" type="text" required inputmode="text" /></div>
     <div class="form-group"><label for="cpf_proprietario">CPF/CNPJ:</label> <input id="cpf_proprietario" name="cpf_proprietario" type="text" inputmode="numeric" /></div>
     <div class="form-group"><label for="telefone_proprietario">Telefone:</label> <input id="telefone_proprietario" name="telefone_proprietario" type="text" inputmode="tel" /></div>
     <div class="form-group"><label for="email_proprietario">Email:</label> <input id="email_proprietario" name="email_proprietario" type="text" inputmode="email" /></div>
-    
-    <!-- Seção 6 - Características do Imóvel -->
+
     <h2>Seção 6 - Características do Imóvel</h2>
     <div class="form-group"><label>Ocup. Lote:</label>
       <div class="radio-group">
@@ -583,8 +599,7 @@
         <div class="radio-option"><input id="aforamento_nao" name="aforamento" type="radio" value="Não" /> <label for="aforamento_nao">Não</label></div>
       </div>
     </div>
-    
-    <!-- Seção 7 - Medidas do Imóvel -->
+
     <h2>Seção 7 - Medidas do Imóvel</h2>
     <div class="form-group"><label for="testada">Testada Principal:</label> <input id="testada" name="testada" type="text" inputmode="decimal" /></div>
     <div class="form-group"><label for="profundidade">Profundidade:</label> <input id="profundidade" name="profundidade" type="text" inputmode="decimal" /></div>
@@ -593,10 +608,9 @@
     <div class="form-group"><label for="area_total_edificada">Área Total Edificada:</label> <input id="area_total_edificada" name="area_total_edificada" type="text" required inputmode="decimal" /></div>
     <div class="form-group"><label for="num_pavimentos">Número de Pavimentos:</label> <input id="num_pavimentos" name="num_pavimentos" type="text" inputmode="numeric" /></div>
     <div class="form-group"><label for="num_unidades">Nº das Unidades:</label> <input id="num_unidades" name="num_unidades" type="text" inputmode="numeric" /></div>
-    
-    <!-- Seção 8 - Informações sobre a Edificação -->
+
     <h2 id="sec8-titulo">Seção 8 - Informações sobre a Edificação</h2>
-    
+
     <div class="container-botoes-rapidos">
       <button type="button" onclick="aplicarPadraoEdificacao('BAIXO')" class="btn-rapido btn-padrao-baixo">
         <i class="fas fa-layer-group"></i> Padrão Baixo
@@ -605,7 +619,7 @@
         <i class="fas fa-layer-group"></i> Padrão Normal
       </button>
     </div>
-    
+
     <div class="form-group"><label>Tipo:</label>
       <div class="radio-group">
         <div class="radio-option"><input id="tipo_nao_aplica" name="tipo_edificacao" type="radio" value="Não se aplica" /> <label for="tipo_nao_aplica">Não se aplica</label></div>
@@ -619,7 +633,7 @@
         <div class="radio-option"><input id="tipo_estacionamento" name="tipo_edificacao" type="radio" value="Estacionamento" /> <label for="tipo_estacionamento">Estacionamento</label></div>
       </div>
     </div>
-    
+
     <div class="form-group"><label>Esquadrias:</label>
       <div class="radio-group">
         <div class="radio-option"><input id="esquadria_nao_aplica" name="tipo_esquadria" type="radio" value="Não se aplica" /> <label for="esquadria_nao_aplica">Não se aplica</label></div>
@@ -815,7 +829,6 @@
         </div>
     </div>
 
-    <!-- Seção 9 - Informações do Logradouro -->
     <h2>Seção 9 - Informações do Logradouro</h2>
     <div class="form-group"><label>Esgoto:</label>
       <div class="radio-group">
@@ -892,8 +905,7 @@
             <div class="radio-option"><input type="radio" id="viario_estiva" name="tipo_viario" value="Estiva"> <label for="viario_estiva">Estiva</label></div>
         </div>
     </div>
-    
-    <!-- Seção 10 - Responsável Técnico -->
+
     <h2>Seção 10 - Responsável Técnico</h2>
     <div class="form-group">
       <label for="nome_responsavel">Nome/Rubrica:</label>
@@ -916,18 +928,22 @@
       <input id="matricula_imovel" name="matricula_imovel" type="text" inputmode="text" />
     </div>
 
-    <!-- NOVA SEÇÃO 11 - OBSERVAÇÕES -->
     <h2>Seção 11 - Observações</h2>
     <div class="form-group">
       <label for="observacoes">Observações (anotações livres):</label>
       <textarea id="observacoes" name="observacoes" rows="4"></textarea>
     </div>
 
+    <div class="container-rascunho">
+      <span class="titulo-rascunho">📋 Rascunho:</span>
+      <button type="button" id="btnSalvarRascunho" onclick="salvarRascunho()">💾 Salvar Rascunho</button>
+      <button type="button" id="btnRetomarRascunho" onclick="retomarRascunho()">📂 Retomar Rascunho</button>
+    </div>
+
     <button type="button" id="btnToggleCroqui" class="btn-toggle-croqui" onclick="toggleCroquiEditor()">
       <i class="fas fa-drafting-compass"></i> Habilitar Editor de Croqui
     </button>
-    
-    <!-- Seção 12 - Editor de Croqui (Inicia oculto) -->
+
     <div id="sec-croqui-container" style="display: none;">
       <h2>Seção 12 - Editor de Croqui</h2>
       <div class="form-group">
@@ -939,10 +955,10 @@
           <button type="button" onclick="setTool('circle')"><i class="fas fa-circle"></i> <span class="tool-label">Círculo</span></button>
           <button type="button" onclick="setTool('text')"><i class="fas fa-font"></i> <span class="tool-label">Texto</span></button>
           <button type="button" onclick="limparCanvas()"><i class="fas fa-eraser"></i> <span class="tool-label">Limpar</span></button>
-          
+
           <span style="margin-left: 5px;">Cor:</span>
           <input type="color" id="colorPicker" value="#000000" onchange="setColor(this.value)" class="color-picker">
-          
+
           <span style="margin-left: 5px;">Espessura:</span>
           <select onchange="setStrokeWidth(this.value)" style="padding: 4px;">
             <option value="1">Fina</option>
@@ -971,19 +987,136 @@
     <button id="exportWhatsApp" type="button">📱 Compartilhar WhatsApp</button>
   </div>
 
-  <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+
   <script>
-    // ============================================================
-    //  PARTE 1: Configuração do croqui e funções auxiliares
-    // ============================================================
     let croquiHabilitado = false;
     let imagensCarregadas = [];
     let canvasInstance = null;
+    let logoBase64 = null;
+
+    (function preloadLogo() {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = function() {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          logoBase64 = canvas.toDataURL('image/png');
+        } catch (e) {}
+      };
+      img.src = 'https://semad.ananindeua.pa.gov.br/ploa_2025/assets/imagens/logo.png';
+    })();
+
+    function salvarRascunho() {
+      try {
+        const form = document.getElementById('bicForm');
+        const dados = {};
+        const inputs = form.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+          if (input.type === 'radio') {
+            if (input.checked && input.name) {
+              dados[input.name] = { tipo: 'radio', valor: input.value };
+            }
+          } else if (input.type !== 'file' && input.name) {
+            dados[input.name] = { tipo: 'valor', valor: input.value };
+          }
+        });
+        const rascunho = {
+          dados: dados,
+          localizacao: document.getElementById('localizacao-coordenadas').value || '',
+          fotos: imagensCarregadas || [],
+          croqui: (croquiHabilitado && canvasInstance) ? canvasInstance.toDataURL('image/png') : null,
+          croquiHabilitado: croquiHabilitado,
+          data: new Date().toISOString()
+        };
+        localStorage.setItem('bic_rascunho', JSON.stringify(rascunho));
+        alert('💾 Rascunho salvo com sucesso!\nVocê pode fechar o navegador e retomar depois.');
+      } catch (e) {
+        if (e.name === 'QuotaExceededError' || String(e).indexOf('quota') !== -1) {
+          alert('❌ Não foi possível salvar o rascunho: muitas imagens ou arquivos grandes.\nTente salvar sem as fotos anexadas.');
+        } else {
+          alert('❌ Erro ao salvar rascunho: ' + e.message);
+        }
+      }
+    }
+
+    function retomarRascunho() {
+      const salvo = localStorage.getItem('bic_rascunho');
+      if (!salvo) {
+        alert('📂 Nenhum rascunho salvo encontrado.');
+        return;
+      }
+      if (!confirm('📂 Deseja retomar o último rascunho salvo?\nOs dados atuais do formulário serão substituídos.')) {
+        return;
+      }
+      try {
+        const rascunho = JSON.parse(salvo);
+
+        for (const nome in rascunho.dados) {
+          const info = rascunho.dados[nome];
+          if (info.tipo === 'radio') {
+            const radio = document.querySelector('input[name="' + nome + '"][value="' + info.valor + '"]');
+            if (radio) radio.checked = true;
+          } else {
+            const campo = document.querySelector('[name="' + nome + '"]');
+            if (campo) campo.value = info.valor;
+          }
+        }
+
+        if (rascunho.localizacao) {
+          document.getElementById('localizacao-coordenadas').value = rascunho.localizacao;
+          document.getElementById('info-localizacao').textContent = 'Localização: ' + rascunho.localizacao;
+        }
+
+        if (rascunho.fotos && Array.isArray(rascunho.fotos)) {
+          imagensCarregadas = rascunho.fotos;
+          const preview = document.getElementById('preview-imagens');
+          preview.innerHTML = '';
+          rascunho.fotos.forEach(function(base64) {
+            const img = document.createElement('img');
+            img.src = base64;
+            img.style.maxWidth = '120px';
+            img.style.marginRight = '10px';
+            img.style.borderRadius = '4px';
+            preview.appendChild(img);
+          });
+        }
+
+        if (rascunho.croquiHabilitado && !croquiHabilitado) {
+          toggleCroquiEditor();
+        }
+
+        if (rascunho.croqui) {
+          setTimeout(function() {
+            if (canvasInstance) {
+              fabric.Image.fromURL(rascunho.croqui, function(img) {
+                canvasInstance.clear();
+                canvasInstance.backgroundColor = '#ffffff';
+                const canvasWidth = canvasInstance.getWidth();
+                const canvasHeight = canvasInstance.getHeight();
+                img.scaleToWidth(canvasWidth);
+                img.set({ left: 0, top: 0, selectable: false, evented: false });
+                canvasInstance.add(img);
+                canvasInstance.sendToBack(img);
+                canvasInstance.renderAll();
+              });
+            }
+          }, 400);
+        }
+
+        atualizarCodigoCartografico();
+        alert('📂 Rascunho retomado com sucesso!');
+      } catch (e) {
+        alert('❌ Erro ao retomar rascunho: ' + e.message);
+      }
+    }
 
     function initCanvas() {
       const container = document.getElementById('cad-canvas-wrapper');
@@ -991,12 +1124,13 @@
       const width = container.clientWidth;
       const height = width * (400 / 600);
       canvasInstance = new fabric.Canvas('cad-canvas', {
-        width, height,
+        width: width,
+        height: height,
         backgroundColor: '#ffffff',
         selection: true,
         preserveObjectStacking: true
       });
-      window.addEventListener('resize', () => {
+      window.addEventListener('resize', function() {
         if (!canvasInstance) return;
         const newWidth = container.clientWidth;
         const newHeight = newWidth * (400 / 600);
@@ -1038,7 +1172,7 @@
       const l = document.getElementById('lote').value.padStart(4, '0').slice(-4);
       const c = document.getElementById('complemento').value.padStart(3, '0').slice(-3);
       const dv = document.getElementById('dv').value.padStart(1, '0').slice(-1);
-      const formatado = `${d}.${q}.${l}.${c}.${dv}`;
+      const formatado = d + '.' + q + '.' + l + '.' + c + '.' + dv;
       document.getElementById('codigo_cartografico_display').textContent = formatado;
       document.getElementById('codigo_cartografico_completo').value = formatado;
     }
@@ -1050,8 +1184,8 @@
           'piscina','tipo_conservacao','tipo_situacao_edif','tipo_estrutura',
           'tipo_acabamento_interno','tipo_acabamento_externo','tipo_cobertura',
           'tipo_sanitario','tipo_piso','tipo_instalacao_eletrica'];
-        nomes.forEach(n => {
-          const radio = document.querySelector(`input[name="${n}"][value="Não se aplica"]`);
+        nomes.forEach(function(n) {
+          const radio = document.querySelector('input[name="' + n + '"][value="Não se aplica"]');
           if (radio) radio.checked = true;
         });
       }
@@ -1070,7 +1204,9 @@
           canvasInstance.freeDrawingBrush = new fabric.PencilBrush(canvasInstance);
           canvasInstance.freeDrawingBrush.width = strokeWidth;
           canvasInstance.freeDrawingBrush.color = currentColor;
-        } else canvasInstance.isDrawingMode = false;
+        } else {
+          canvasInstance.isDrawingMode = false;
+        }
       }
       canvasInstance.defaultCursor = tool === 'select' ? 'default' : 'crosshair';
     }
@@ -1078,12 +1214,16 @@
     function setColor(color) {
       currentColor = color;
       document.getElementById('colorPicker').value = color;
-      if (canvasInstance?.freeDrawingBrush) canvasInstance.freeDrawingBrush.color = color;
+      if (canvasInstance && canvasInstance.freeDrawingBrush) {
+        canvasInstance.freeDrawingBrush.color = color;
+      }
     }
 
     function setStrokeWidth(width) {
       strokeWidth = width;
-      if (canvasInstance?.freeDrawingBrush) canvasInstance.freeDrawingBrush.width = width;
+      if (canvasInstance && canvasInstance.freeDrawingBrush) {
+        canvasInstance.freeDrawingBrush.width = width;
+      }
     }
 
     function setupCanvasEvents() {
@@ -1093,15 +1233,15 @@
         startPoint = pointer;
         if (currentTool === 'rectangle') {
           isDrawing = true;
-          tempObject = new fabric.Rect({ left: pointer.x, top: pointer.y, width: 1, height: 1, fill: 'transparent', stroke: currentColor, strokeWidth });
+          tempObject = new fabric.Rect({ left: pointer.x, top: pointer.y, width: 1, height: 1, fill: 'transparent', stroke: currentColor, strokeWidth: strokeWidth });
           canvasInstance.add(tempObject);
         } else if (currentTool === 'circle') {
           isDrawing = true;
-          tempObject = new fabric.Circle({ left: pointer.x, top: pointer.y, radius: 1, fill: 'transparent', stroke: currentColor, strokeWidth });
+          tempObject = new fabric.Circle({ left: pointer.x, top: pointer.y, radius: 1, fill: 'transparent', stroke: currentColor, strokeWidth: strokeWidth });
           canvasInstance.add(tempObject);
         } else if (currentTool === 'line') {
           isDrawing = true;
-          tempObject = new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y], { stroke: currentColor, strokeWidth, selectable: true });
+          tempObject = new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y], { stroke: currentColor, strokeWidth: strokeWidth, selectable: true });
           canvasInstance.add(tempObject);
         } else if (currentTool === 'text') {
           const text = new fabric.IText('', { left: pointer.x, top: pointer.y, fontSize: 16, fill: currentColor, fontFamily: 'Arial', hasControls: true });
@@ -1117,7 +1257,7 @@
           tempObject.set({ width: Math.abs(pointer.x - tempObject.left), height: Math.abs(pointer.y - tempObject.top) });
         } else if (currentTool === 'circle' && tempObject.type === 'circle') {
           const radius = Math.sqrt(Math.pow(pointer.x - tempObject.left, 2) + Math.pow(pointer.y - tempObject.top, 2));
-          tempObject.set({ radius });
+          tempObject.set({ radius: radius });
         } else if (currentTool === 'line' && tempObject.type === 'line') {
           tempObject.set({ x2: pointer.x, y2: pointer.y });
         }
@@ -1145,7 +1285,7 @@
         .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '_').toLowerCase().substring(0,50);
       const dataAtual = new Date().toISOString().split('T')[0];
-      return `bic_${nomeFormatado || 'relatorio'}_${dataAtual}_${tipo}`;
+      return 'bic_' + (nomeFormatado || 'relatorio') + '_' + dataAtual + '_' + tipo;
     }
 
     const padroesEdificacao = {
@@ -1167,30 +1307,59 @@
     };
 
     function aplicarPadraoEdificacao(padrao) {
-      if (confirm(`Deseja aplicar o padrão ${padrao} à edificação?`)) {
+      if (confirm('Deseja aplicar o padrão ' + padrao + ' à edificação?')) {
         const dadosPadrao = padroesEdificacao[padrao];
-        for (const [campo, valor] of Object.entries(dadosPadrao)) {
-          const radio = document.querySelector(`input[name="${campo}"][value="${valor}"]`);
+        for (const campo in dadosPadrao) {
+          const valor = dadosPadrao[campo];
+          const radio = document.querySelector('input[name="' + campo + '"][value="' + valor + '"]');
           if (radio) { radio.checked = true; continue; }
-          const input = document.querySelector(`[name="${campo}"]`);
+          const input = document.querySelector('[name="' + campo + '"]');
           if (input && input.type !== 'radio' && input.type !== 'checkbox') input.value = valor;
         }
-        alert(`Padrão ${padrao} aplicado com sucesso!`);
+        alert('Padrão ' + padrao + ' aplicado com sucesso!');
       }
     }
 
-    // ============================================================
-    //  PARTE 2: GERAR PDF COM A ORDEM DO SISTEMA (PASSOS 1 a 9)
-    // ============================================================
     function gerarPDFBlob(data) {
-      return new Promise((resolve, reject) => {
+      return new Promise(function(resolve, reject) {
         try {
-          const { jsPDF } = window.jspdf;
+          const jsPDF = window.jspdf.jsPDF;
           const doc = new jsPDF();
-          let y = 15;
+          let y = 40;
+          const dataGeracao = new Date().toLocaleString('pt-BR');
+
+          function adicionarCabecalho() {
+            if (logoBase64) {
+              try {
+                doc.addImage(logoBase64, 'PNG', 15, 8, 18, 18);
+              } catch (e) {}
+            }
+            doc.setFontSize(18);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(44, 62, 80);
+            doc.text("D-Bic", 38, 15);
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(52, 152, 219);
+            doc.text("Bic Digital", 38, 21);
+            doc.setFontSize(9);
+            doc.setTextColor(60, 60, 60);
+            doc.text("Prefeitura Municipal de Ananindeua", 38, 26);
+            doc.setDrawColor(52, 152, 219);
+            doc.setLineWidth(0.5);
+            doc.line(15, 30, 195, 30);
+            doc.setTextColor(0, 0, 0);
+            doc.setLineWidth(0.2);
+          }
+
+          function novaPagina() {
+            doc.addPage();
+            y = 40;
+            adicionarCabecalho();
+          }
 
           function adicionarSecao(titulo) {
-            if (y > 265) { doc.addPage(); y = 20; }
+            if (y > 265) { novaPagina(); }
             doc.setFontSize(11);
             doc.setFont("helvetica", "bold");
             doc.setFillColor(230, 230, 230);
@@ -1201,15 +1370,15 @@
           }
 
           function imprimirCampo(label, valor) {
-            if (y > 270) { doc.addPage(); y = 20; }
+            if (y > 270) { novaPagina(); }
             doc.setFontSize(9);
             doc.setFont("helvetica", "bold");
             doc.text(label + ":", 15, y);
             y += 5;
             doc.setFont("helvetica", "normal");
             const lines = doc.splitTextToSize(String(valor || "____________________"), 170);
-            lines.forEach(line => {
-              if (y > 270) { doc.addPage(); y = 20; }
+            lines.forEach(function(line) {
+              if (y > 270) { novaPagina(); }
               doc.text(line, 20, y);
               y += 6;
             });
@@ -1217,7 +1386,7 @@
           }
 
           function imprimirTabelaVazia(titulo, colunas) {
-            if (y > 250) { doc.addPage(); y = 20; }
+            if (y > 250) { novaPagina(); }
             doc.setFontSize(9);
             doc.setFont("helvetica", "bold");
             doc.text(titulo, 15, y);
@@ -1225,13 +1394,13 @@
             doc.setFont("helvetica", "normal");
             let x = 15;
             const largura = 50;
-            colunas.forEach(col => {
+            colunas.forEach(function(col) {
               doc.text(col, x, y);
               x += largura;
             });
             y += 4;
             for (let i = 0; i < 5; i++) {
-              if (y > 270) { doc.addPage(); y = 20; }
+              if (y > 270) { novaPagina(); }
               x = 15;
               for (let j = 0; j < colunas.length; j++) {
                 doc.text("____________________", x, y);
@@ -1242,7 +1411,8 @@
             y += 4;
           }
 
-          // ===== SEÇÃO 1 – Dados do Imóvel =====
+          adicionarCabecalho();
+
           adicionarSecao("1. Dados do Imóvel");
           imprimirCampo("Identificador", "");
           imprimirCampo("CIF", data.dados['cif']);
@@ -1256,7 +1426,6 @@
           imprimirCampo("Englobado", "");
           imprimirCampo("Matrícula do Imóvel", data.dados['matricula_imovel']);
 
-          // ===== SEÇÃO 2 – Localização =====
           adicionarSecao("2. Localização");
           imprimirCampo("CEP", data.dados['cep']);
           imprimirCampo("Estado", "");
@@ -1287,7 +1456,6 @@
           imprimirCampo("Conservação do Pavimento", "");
           imprimirCampo("Meio Fio", "");
 
-          // ===== SEÇÃO 3 – Endereço para Correspondência =====
           adicionarSecao("3. Endereço para Correspondência");
           imprimirCampo("Usar Endereço de correspondência diferente", "");
           imprimirCampo("CEP", "");
@@ -1299,7 +1467,6 @@
           imprimirCampo("Tipo de Logradouro", "");
           imprimirCampo("Bairro", "");
 
-          // ===== SEÇÃO 4 – Proprietários =====
           adicionarSecao("4. Proprietários");
           imprimirCampo("CPF/CNPJ", data.dados['cpf_proprietario']);
           imprimirCampo("Nome/Razão Social", data.dados['nome_proprietario']);
@@ -1311,7 +1478,6 @@
           imprimirCampo("Data Aquisição", "");
           imprimirCampo("Data Transmissão", "");
 
-          // ===== SEÇÃO 5 – Informações sobre o Lote/Terreno =====
           adicionarSecao("5. Informações sobre o Lote/Terreno");
           imprimirCampo("Ocupação do Terreno/Lote", data.dados['ocupacao_lote']);
           imprimirCampo("Situação Quadra", data.dados['situacao_quadra']);
@@ -1320,12 +1486,10 @@
           imprimirCampo("Limitação", data.dados['limitacao']);
           imprimirCampo("Pedologia", data.dados['pedologia']);
 
-          // ===== SEÇÃO 6 – Informações sobre Testadas =====
           adicionarSecao("6. Informações sobre Testadas");
           imprimirCampo("Testada Principal", data.dados['testada']);
           imprimirTabelaVazia("Testadas:", ["Logradouro", "Cód. Logradouro", "Medida (m)"]);
 
-          // ===== SEÇÃO 7 – Medidas do Imóvel =====
           adicionarSecao("7. Medidas do Imóvel");
           imprimirCampo("Profundidade", data.dados['profundidade']);
           imprimirCampo("Área do Lote/Terreno", data.dados['area_terreno']);
@@ -1333,7 +1497,6 @@
           imprimirCampo("Número de Pavimentos", data.dados['num_pavimentos']);
           imprimirCampo("Área Construída da Unidade", data.dados['area_edif_unidade']);
 
-          // ===== SEÇÃO 8 – Informações sobre a Edificação =====
           adicionarSecao("8. Informações sobre a Edificação");
           imprimirCampo("Tipologia/Edificação", data.dados['tipo_edificacao']);
           imprimirCampo("Revestimento Fachada", "");
@@ -1357,7 +1520,6 @@
           imprimirCampo("Piso", data.dados['tipo_piso']);
           imprimirCampo("OCUPAÇÃO", data.dados['tipo_ocupacao']);
 
-          // ===== SEÇÃO 9 – Informações Adicionais =====
           adicionarSecao("9. Informações Adicionais");
           imprimirCampo("Revestimento Interno (LAJE)", "");
           imprimirCampo("Piscina", data.dados['piscina']);
@@ -1367,40 +1529,29 @@
           imprimirTabelaVazia("Resíduo(s) Sólido(s) do Imóvel:", ["Código", "Faixa", "Tipo de Coleta"]);
           imprimirTabelaVazia("Serviços no Imóvel:", ["Código", "Nome"]);
 
-          // ===== FOTOS ===== (CORRIGIDO: detecção automática de formato)
           if (data.fotos && data.fotos.length > 0) {
-            doc.addPage();
-            y = 20;
+            novaPagina();
             doc.setFontSize(14);
             doc.setFont("helvetica", "bold");
             doc.text("REGISTRO FOTOGRÁFICO DO IMÓVEL", 105, y, { align: 'center' });
             y += 15;
-
-            data.fotos.forEach((imgData) => {
-              if (y > 200) { doc.addPage(); y = 20; }
+            data.fotos.forEach(function(imgData) {
+              if (y > 220) { novaPagina(); }
               try {
-                // Detecta formato automaticamente
                 let format = 'JPEG';
-                if (imgData.startsWith('data:image/png')) {
-                  format = 'PNG';
-                } else if (imgData.startsWith('data:image/jpeg')) {
-                  format = 'JPEG';
-                }
+                if (imgData.indexOf('data:image/png') === 0) format = 'PNG';
+                else if (imgData.indexOf('data:image/jpeg') === 0) format = 'JPEG';
                 const imgProps = doc.getImageProperties(imgData);
                 const w = 120;
                 const h = (imgProps.height * w) / imgProps.width;
                 doc.addImage(imgData, format, 15, y, w, h);
                 y += h + 8;
-              } catch(e) {
-                console.error("Erro ao adicionar foto ao PDF:", e);
-              }
+              } catch (e) {}
             });
           }
 
-          // ===== CROQUI =====
           if (data.croquiAtivo && data.imagem) {
-            doc.addPage();
-            y = 20;
+            novaPagina();
             doc.setFontSize(14);
             doc.setFont("helvetica", "bold");
             doc.text("CROQUI TÉCNICO", 105, y, { align: 'center' });
@@ -1410,10 +1561,19 @@
               const pdfWidth = doc.internal.pageSize.getWidth() - 30;
               const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
               doc.addImage(data.imagem, 'PNG', 15, y, pdfWidth, pdfHeight);
-            } catch(e) {
-              console.error("Erro ao inserir croqui:", e);
-            }
+            } catch (e) {}
           }
+
+          const totalPaginas = doc.getNumberOfPages();
+          for (let i = 1; i <= totalPaginas; i++) {
+            doc.setPage(i);
+            doc.setFontSize(8);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(100, 100, 100);
+            doc.text('Gerado em: ' + dataGeracao, 15, 292);
+            doc.text("LLCP", 195, 292, { align: 'right' });
+          }
+          doc.setTextColor(0, 0, 0);
 
           resolve(doc.output('blob'));
         } catch (err) {
@@ -1422,9 +1582,6 @@
       });
     }
 
-    // ============================================================
-    //  PARTE 3: Eventos de geração e exportação
-    // ============================================================
     document.getElementById("gerarResultado").addEventListener("click", function() {
       const form = document.getElementById("bicForm");
       const resultDiv = document.getElementById("result");
@@ -1439,36 +1596,37 @@
 
       let dados = {};
       const inputs = form.querySelectorAll("input, textarea, select");
-      inputs.forEach(input => {
+      inputs.forEach(function(input) {
         if ((input.type === "radio" && input.checked) || input.type !== "radio") {
           if (input.name && input.value) dados[input.name] = input.value;
         }
       });
 
       const imagemDesenho = (croquiHabilitado && canvasInstance) ? canvasInstance.toDataURL("image/png") : null;
-      
-      let html = `<h3>BOLETIM DE INFORMAÇÕES CADASTRAIS</h3>`;
-      html += `<h4>Proprietário: ${document.getElementById('nome_proprietario').value}</h4>`;
+
+      let html = '<h3>BOLETIM DE INFORMAÇÕES CADASTRAIS</h3>';
+      html += '<h4>Proprietário: ' + document.getElementById('nome_proprietario').value + '</h4>';
       html += '<div style="line-height:1.8;">';
-      for (const [chave, valor] of Object.entries(dados)) {
-        const label = chave.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      for (const chave in dados) {
+        const valor = dados[chave];
+        const label = chave.replace(/_/g, ' ').replace(/\b\w/g, function(l) { return l.toUpperCase(); });
         if (chave === 'localizacao-coordenadas') continue;
-        html += `<p><strong>${label}:</strong> ${valor}</p>`;
+        html += '<p><strong>' + label + ':</strong> ' + valor + '</p>';
       }
       const coord = document.getElementById('localizacao-coordenadas').value;
-      if (coord) html += `<p><strong>Geolocalização:</strong> ${coord}</p>`;
+      if (coord) html += '<p><strong>Geolocalização:</strong> ' + coord + '</p>';
       html += '</div>';
 
       if (imagensCarregadas.length > 0) {
-        html += `<h3>Imagens do Imóvel:</h3><div style="display:flex; gap:10px; flex-wrap:wrap;">`;
-        imagensCarregadas.forEach(img => {
-          html += `<img src="${img}" style="max-width:120px; border:1px solid #ccc; border-radius:4px;">`;
+        html += '<h3>Imagens do Imóvel:</h3><div style="display:flex; gap:10px; flex-wrap:wrap;">';
+        imagensCarregadas.forEach(function(img) {
+          html += '<img src="' + img + '" style="max-width:120px; border:1px solid #ccc; border-radius:4px;">';
         });
-        html += `</div>`;
+        html += '</div>';
       }
 
       if (croquiHabilitado && imagemDesenho) {
-        html += `<h3>Croqui Técnico:</h3><img src="${imagemDesenho}" style="max-width:100%; border:1px solid #ccc;" alt="Desenho">`;
+        html += '<h3>Croqui Técnico:</h3><img src="' + imagemDesenho + '" style="max-width:100%; border:1px solid #ccc;" alt="Desenho">';
       }
 
       resultDiv.innerHTML = html;
@@ -1484,87 +1642,78 @@
       };
     });
 
-    // Exportar TXT
     document.getElementById("exportTxt").addEventListener("click", function() {
       if (!window.currentReportData) return alert("Gere o relatório primeiro.");
       const data = window.currentReportData;
       let txt = "BOLETIM DE INFORMAÇÕES CADASTRAIS\n\n";
-      txt += `Proprietário: ${data.nomeProprietario}\n`;
-      if (data.localizacao) txt += `Geolocalização: ${data.localizacao}\n`;
-      txt += `\n`;
-      for (const [k, v] of Object.entries(data.dados)) {
-        txt += `${k.replace(/_/g, ' ')}: ${v}\n`;
+      txt += 'Proprietário: ' + data.nomeProprietario + '\n';
+      if (data.localizacao) txt += 'Geolocalização: ' + data.localizacao + '\n';
+      txt += '\n';
+      for (const k in data.dados) {
+        txt += k.replace(/_/g, ' ') + ': ' + data.dados[k] + '\n';
       }
       const blob = new Blob([txt], {type: "text/plain;charset=utf-8"});
       saveAs(blob, getNomeArquivo("relatorio") + ".txt");
     });
 
-    // Exportar CSV
     document.getElementById("exportCsv").addEventListener("click", function() {
       if (!window.currentReportData) return alert("Gere o relatório primeiro.");
       const data = window.currentReportData;
       let csv = "Campo,Valor\n";
-      if (data.localizacao) csv += `"Geolocalização","${data.localizacao}"\n`;
-      for (const [k, v] of Object.entries(data.dados)) {
-        csv += `"${k}","${v}"\n`;
+      if (data.localizacao) csv += '"Geolocalização","' + data.localizacao + '"\n';
+      for (const k in data.dados) {
+        csv += '"' + k + '","' + data.dados[k] + '"\n';
       }
       const blob = new Blob([csv], {type: "text/csv;charset=utf-8"});
       saveAs(blob, getNomeArquivo("dados") + ".csv");
     });
 
-    // Exportar PDF (usa a nova função com a ordem do sistema)
     document.getElementById("exportPdf").addEventListener("click", function() {
       if (!window.currentReportData) return alert("Gere o relatório primeiro.");
       gerarPDFBlob(window.currentReportData)
-        .then(blob => saveAs(blob, getNomeArquivo("completo") + ".pdf"))
-        .catch(err => alert("Erro ao gerar PDF: " + err.message));
+        .then(function(blob) { saveAs(blob, getNomeArquivo("completo") + ".pdf"); })
+        .catch(function(err) { alert("Erro ao gerar PDF: " + err.message); });
     });
 
-    // Compartilhar por e-mail
     document.getElementById("exportEmail").addEventListener("click", function() {
       if (!window.currentReportData) return alert("Gere o relatório primeiro.");
       gerarPDFBlob(window.currentReportData)
-        .then(blob => {
+        .then(function(blob) {
           const file = new File([blob], getNomeArquivo("completo") + ".pdf", { type: 'application/pdf' });
           if (navigator.share) {
             navigator.share({ title: 'Boletim de Informações Cadastrais', text: 'Segue o BIC do imóvel.', files: [file] })
-              .catch(err => { if (err.name !== 'AbortError') alert('Erro ao compartilhar: ' + err.message); });
+              .catch(function(err) { if (err.name !== 'AbortError') alert('Erro ao compartilhar: ' + err.message); });
           } else {
             saveAs(blob, getNomeArquivo("completo") + ".pdf");
             alert('Seu navegador não suporta compartilhamento direto. O arquivo foi baixado; anexe-o manualmente ao seu e-mail.');
           }
         })
-        .catch(err => alert("Erro ao gerar PDF: " + err.message));
+        .catch(function(err) { alert("Erro ao gerar PDF: " + err.message); });
     });
 
-    // Compartilhar WhatsApp
     document.getElementById("exportWhatsApp").addEventListener("click", function() {
       if (!window.currentReportData) return alert("Gere o relatório primeiro.");
       gerarPDFBlob(window.currentReportData)
-        .then(blob => {
+        .then(function(blob) {
           const file = new File([blob], getNomeArquivo("completo") + ".pdf", { type: 'application/pdf' });
           if (navigator.share) {
             navigator.share({ title: 'Boletim de Informações Cadastrais', text: 'Segue o BIC do imóvel.', files: [file] })
-              .catch(err => { if (err.name !== 'AbortError') alert('Erro ao compartilhar: ' + err.message); });
+              .catch(function(err) { if (err.name !== 'AbortError') alert('Erro ao compartilhar: ' + err.message); });
           } else {
             const texto = encodeURIComponent('Olá, segue o Boletim de Informações Cadastrais (BIC) do imóvel. O arquivo PDF será enviado em anexo (ou baixe anexando manualmente).');
-            window.open(`https://api.whatsapp.com/send?text=${texto}`, '_blank');
+            window.open('https://api.whatsapp.com/send?text=' + texto, '_blank');
             saveAs(blob, getNomeArquivo("completo") + ".pdf");
             alert('O PDF foi baixado. Anexe-o à conversa do WhatsApp manualmente.');
           }
         })
-        .catch(err => alert("Erro ao gerar PDF: " + err.message));
+        .catch(function(err) { alert("Erro ao gerar PDF: " + err.message); });
     });
 
-    // Enviar para sistema (simulação)
     document.getElementById("uploadSystem").addEventListener("click", function() {
       if (!window.currentReportData) return alert("Gere o relatório primeiro.");
       alert("Enviando relatório para o sistema...");
     });
 
-    // ============================================================
-    //  PARTE 4: Geolocalização e upload de imagens
-    // ============================================================
     function obterLocalizacao() {
       const info = document.getElementById("info-localizacao");
       if (!navigator.geolocation) {
@@ -1573,13 +1722,13 @@
       }
       info.textContent = "Obtendo localização...";
       navigator.geolocation.getCurrentPosition(
-        (pos) => {
+        function(pos) {
           const lat = pos.coords.latitude.toFixed(6);
           const lng = pos.coords.longitude.toFixed(6);
-          document.getElementById("localizacao-coordenadas").value = `${lat}, ${lng}`;
-          info.textContent = `Localização: ${lat}, ${lng}`;
+          document.getElementById("localizacao-coordenadas").value = lat + ', ' + lng;
+          info.textContent = 'Localização: ' + lat + ', ' + lng;
         },
-        () => { info.textContent = "Não foi possível obter a localização."; }
+        function() { info.textContent = "Não foi possível obter a localização."; }
       );
     }
 
@@ -1604,14 +1753,12 @@
       }
     });
 
-    // ============================================================
-    //  INICIALIZAÇÃO
-    // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
       setTool('select');
     });
 
-    // Expor funções globalmente
+    window.salvarRascunho = salvarRascunho;
+    window.retomarRascunho = retomarRascunho;
     window.toggleCroquiEditor = toggleCroquiEditor;
     window.atualizarCodigoCartografico = atualizarCodigoCartografico;
     window.verificarNaoConstruido = verificarNaoConstruido;
